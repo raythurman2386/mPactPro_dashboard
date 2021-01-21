@@ -99,6 +99,10 @@ with open(masterFile) as master, open(outputFileName, 'w') as outfile:
             else:
                 newRow.append(item)
             
+        # This will be a better way in the future to do all of this
+        # Right now this just overwrites race to the proper item
+        if newRow[9] == 'c. Chose not to respond':
+            newRow[9] = 'd. Chose not to respond'
 
         w.writerow(newRow)
 
