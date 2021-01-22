@@ -4,4 +4,7 @@
 node_modules
 dist
 .cache
-*/**.csv
+*/**/*.csv
+*/**/*.xlsx
+*/**/*.xls
+*/env/
