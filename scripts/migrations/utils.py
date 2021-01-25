@@ -18,7 +18,7 @@ def validate_dates(d):
 
 
 options = {
-    'status': ['New Intake', 'Active', 'Completed', 'WIthdrew', 'Inactive', 'Completed - Education Only'],
+    'status': ['New Intake', 'Active', 'Completed', 'Withdrew', 'Inactive', 'Completed - Education Only'],
     'programEnrollment': ['Home Purchase', 'Mortgage Modification', 'Homelessness Assistance', 'Rental Topics', 'Homeowner Services', 'Education Services'],
     'gender': ['Male', 'Female'],
     'race': {
