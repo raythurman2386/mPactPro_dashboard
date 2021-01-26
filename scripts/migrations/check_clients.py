@@ -19,11 +19,6 @@ def check_clients(masterFile, outputFileName, length):
         for row in r:
             # Changes to individuals will need done through here
             newRow = []
-            # print(type(row[7]))
-            # TODO: Look into why dates are acting wonky in Excel
-            # Work to find a date work around.
-
-
             # NEED TO FIND BETTER OPTIONS THAN A GIANT FOR LOOP
             # WILL WORK FOR NOW, BUT MAY NEED TO UPDATE FIELDS AS NEW ONES ARISE  
             # THAT THIS ONE DOESN'T CATCH
