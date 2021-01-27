@@ -9,166 +9,128 @@ def check_clients(masterFile, outputFileName, length):
         w = csv.writer(outfile)
 
         # Skip the old header
-        # next(r)
+        next(r)
 
         # WRITE A NEW HEADER IF NEEDED TO MATCH WHAT IS NEEDED
         # With header names to match MSSQL Server
-        # w.writerow(['ClientID', 'ClientCaseStatus', 'ClientProgramEnrollment', 'ActiveStaff', 'ClientFirstName', 'ClientMiddleName', 'ClientLastName', 'DateOfBirth', 'Gender', 'Race', 'Ethnicity', 'VeteranStatus', 'ActiveMilitary', 'FirstTimeHomebuyer', 'HouseholdSize', 'CountyAmiIncomeLimit', 'HouseholdIncome', 'HouseholdIncomeBand', 'IntakeDate', 'StreetNumber', 'StreetName', 'ApartmentNumber', 'ClientCity', 'ClientCounty', 'ClientState', 'ClientZip', 'PrivacyOptOut', 'RuralAreaStatus', 'EnglishProficiencyLevel', 'BillToHud', '8a', '8b', '8c', '8d', '8e', '8f', '8g', '8h', '8i', '9a', '9b', '9c', '9d', '9e', '9f', '10a', '10b', '10c', '10d', '10e', '10f', '10g', '10h', '10i', '10j', '10k', '10l', '10m', 'PhoneNumberMobile', 'PhoneNumberWork', 'PhoneNumberHome', 'ImmigrationStatus', 'EmailHome', 'EmailWork', 'MaritalStatus', 'Disability', 'HouseholdType', 'Education', 'ReferalSource', 'LastContact', 'ActiveReportDateHUD', 'CompletedDate', 'InactiveDate'])
+        w.writerow(['ClientID', 'ClientCaseStatus', 'ClientProgramEnrollment', 'ActiveStaff', 'ClientFirstName', 'ClientMiddleName', 'ClientLastName', 'DateOfBirth', 'Gender', 'Race', 'Ethnicity', 'VeteranStatus', 'ActiveMilitary', 'FirstTimeHomebuyer', 'HouseholdSize', 'CountyAmiIncomeLimit', 'HouseholdIncome', 'HouseholdIncomeBand', 'IntakeDate', 'StreetNumber', 'StreetName', 'ApartmentNumber', 'ClientCity', 'ClientCounty', 'ClientState', 'ClientZip', 'PrivacyOptOut', 'RuralAreaStatus', 'EnglishProficiencyLevel', 'BillToHud', '8a', '8b', '8c', '8d', '8e', '8f', '8g', '8h', '8i', '9a', '9b', '9c', '9d', '9e', '9f', '10a', '10b', '10c', '10d', '10e', '10f', '10g', '10h', '10i', '10j', '10k', '10l', '10m', 'PhoneNumberMobile', 'PhoneNumberWork', 'PhoneNumberHome', 'ImmigrationStatus', 'EmailHome', 'EmailWork', 'MaritalStatus', 'Disability', 'HouseholdType', 'Education', 'ReferalSource', 'LastContact', 'ActiveReportDateHUD', 'CompletedDate', 'InactiveDate'])
 
         # Writes the remaining rows to the file
         for row in r:
             # Changes to individuals will need done through here
             newRow = []
-            # NEED TO FIND BETTER OPTIONS THAN A GIANT FOR LOOP
-            # WILL WORK FOR NOW, BUT MAY NEED TO UPDATE FIELDS AS NEW ONES ARISE  
-            # THAT THIS ONE DOESN'T CATCH
+            
+            # Add all items to a new row to alter
             for item in row:
-                # Race items
-                if item == 'American Indian/Alaskan Native' or item == 'Native American/American Indian' or item == 'American Indian or Alaska Native':
-                    newItem = options['race']['a']
-                    newRow.append(newItem)
-                elif item == 'Asian' or item == 'Asian Pacific Islander':
-                    newItem = options['race']['b']
-                    newRow.append(newItem)
-                elif item == 'Black/African American' or item == 'Black or African American':
-                    newItem = options['race']['c']
-                    newRow.append(newItem)
-                elif item == 'Black/African American & White' or item == 'Black or African American AND White':
-                    newItem = options['race']['h']
-                    newRow.append(newItem)
-                elif item == 'White' or item == 'White/Caucasian':
-                    newItem = options['race']['e']
-                    newRow.append(newItem)
-                elif item == 'American Indian AND White':
-                    newItem = options['race']['f']
-                    newRow.append(newItem)
-                elif item == 'Asian AND White':
-                    newItem = options['race']['g']
-                    newRow.append(newItem)
-                elif item == 'Other Multiple Race' or item == 'Multi-Race' or item == 'Other multiple race':
-                    newItem = options['race']['j']
-                    newRow.append(newItem)
-                elif item == 'Not Reported':
-                    newItem = options['race']['k']
-                    newRow.append(newItem)
+                newRow.append(item)
 
-                # Ethnicity Items
-                elif item == 'Hispanic' or item == 'Hispanic or Latino' or item == 'Hispanic/Latino':
-                    newItem = options['ethnicity']['a']
-                    newRow.append(newItem)
-                elif item == 'Not Hispanic' or item == 'Not Hispanic or Latino':
-                    newItem = options['ethnicity']['b']
-                    newRow.append(newItem)
-                elif item == 'Prefer Not to Answer':
-                    newItem = options['ethnicity']['c']
-
-                # Income Band Items
-                elif item == 'HUD Adj: Extremely Low (0-30%)' or item == '<30%' or item == '< 30% of AMI':
-                    newItem = options['incomeBand']['a']
-                    newRow.append(newItem)
-                elif item == 'HUD Adj: Very Low (31-50%)' or item == '30-49%' or item == '30 - 49% of AMI':
-                    newItem = options['incomeBand']['b']
-                    newRow.append(newItem)
-                elif item == 'HUD Adj: Low (51-80%)' or item == '50-79%' or item == '50 - 79% of AMI':
-                    newItem = options['incomeBand']['c']
-                    newRow.append(newItem)
-                elif item == 'HUD Adj: (81-100%)' or item == '80-100%' or item == '80 - 100% of AMI':
-                    newItem = options['incomeBand']['d']
-                    newRow.append(newItem)
-                elif item == 'HUD Adj: Over (100%)' or item == '>120%' or item == '100%-120%':
-                    newItem = options['incomeBand']['e']
-                    newRow.append(newItem)
-                elif item == 'Check required fields--Income level, MSA, Household size.':
-                    newItem = options['incomeBand']['f']
-                    newRow.append(newItem)
-
-                # Eng Proficiency
-                elif item == 'Is English proficient' or item == 'English' or item == 'Household is Limited English Proficient':
-                    newItem = options['englishProficiency'][1]
-                    newRow.append(newItem)
-                elif item == 'Is not English proficient' or item == 'Household is not Limited English Proficient':
-                    newItem = options['englishProficiency'][0]
-                    newRow.append(newItem)
-                elif item == 'Chose not to respond' or item == 'Chose Not to Respond':
-                    newItem = options['englishProficiency'][2]
-                    newRow.append(newItem)
-
-                # Rural Status
-                elif item == 'Household lives in a rural area' or item == 'Household Lives in a Rural Area' or item == 'Lives in rural area':
-                    newItem = options['ruralStatus'][0]
-                    newRow.append(newItem)
-                elif item == 'Household does not live in a rural area' or item == 'Household Does Not Live in a Rural Area' or item == 'Does not live in rural area':
-                    newItem = options['ruralStatus'][1]
-                    newRow.append(newItem)
-
-                # Client Case Status
-                elif item == 'In-Process':
-                    newItem = options['status'][1]
-                    newRow.append(newItem)
-                elif item == 'Suspended' or item == 'Ineligible':
-                    newItem = options['status'][4]
-                    newRow.append(newItem)
-                elif item == 'Fulfilled':
-                    newItem = options['status'][2]
-                    newRow.append(newItem)
-                elif item == 'Withdrew':
-                    newItem = options['status'][3]
-                    newRow.append(newItem)
-
-                # Client Program Enrollment
-                elif item == 'Education':
-                    newItem = options['programEnrollment'][5]
-                    newRow.append(newItem)
-                elif item == 'Mortgage Default/Early Delinquency':
-                    newItem = options['programEnrollment'][1]
-                    newRow.append(newItem)
-                elif item == 'Financial Capability Counseling':
-                    newItem = options['programEnrollment'][5]
-                    newRow.append(newItem)
-
-                # check for dates
-                # elif re.search(r'\d{1,4}(?P<delim>[.\-/])\d{1,2}(?P=delim)\d{1,4}', item):
-                #     newItem = validate_dates(item)
-                #     newRow.append(newItem)
-                # else:
-                #     newRow.append(item)
-                
             # THE NUMBERS IN THE FOLLOWING ROWS COULD POTENTIALLY NEED UPDATED IF AGENCIES DIDN'T 
             # FOLLOW OUR EXACT TEMPLATE, CHECK NUMBERS BEFORE RUNNING
-            # This will be a better way in the future to do all of this
-            # Right now this just overwrites race to the proper item
-            # if newRow[10] == 'c. Chose not to respond':
-            #     newRow[10] = options['race']['k']
-            # if newRow[18] == 'c. Chose not to respond':
-            #     newRow[18] = options['incomeBand']['f']
 
+            # ClientCaseStatus
+            if newRow[1] == 'In-Process':
+                newRow[1] = options['status'][1]
+            elif newRow[1] == 'Fulfilled':
+                newRow[1] = options['status'][2]
+            elif newRow[1] == 'Suspended':
+                newRow[1] = options['status'][4]
+            # elif newRow[1] == '':
+            #     newRow[1] = options['status'][]
+            # elif newRow[1] == '':
+            #     newRow[1] = options['status'][]
+            # elif newRow[1] == '':
+            #     newRow[1] = options['status'][]
 
-            # *************************************************************************
-            # UNCOMMENT IF YOU NEED TO SEPARATE THE HOUSE NUMBER FROM THE ADDRESSES
-            # ENSURE THAT BEFORE YOU RUN MAKE THE STREET NUMBER COLUMN ON THE ORIGINAL
-            # CSV DOCUMENT. EDIT AS NEEDED
+            # Gender
+            if newRow[6] == '1':
+                newRow[6] = options['gender'][0]
+            elif newRow[6] == '2':
+                newRow[6] = options['gender'][1]
 
+            # Race
+            if newRow[7] == 'Native American/American Indian':
+                newRow[7] = options['race']['a']
+            elif newRow[7] == 'Black/African American':
+                newRow[7] = options['race']['c']
+            elif newRow[7] == 'White/Caucasian':
+                newRow[7] = options['race']['e']
+            elif newRow[7] == 'Hispanic/Latino':
+                newRow[7] = options['race']['j']
+            elif newRow[7] == 'Multi-Race':
+                newRow[7] = options['race']['j']
+            # elif newRow[7] == 'Not Reported':
+            #     newRow[7] = options['race']['k']
+            # elif newRow[7] == 'Not Reported':
+            #     newRow[7] = options['race']['k']
+            # elif newRow[7] == 'Not Reported':
+            #     newRow[7] = options['race']['k']
+            # elif newRow[7] == 'Not Reported':
+            #     newRow[7] = options['race']['k']
+            elif newRow[7] == 'Other':
+                newRow[7] = options['race']['j']
+            elif newRow[7] == 'Not Reported' or newRow[7] == '':
+                newRow[7] = options['race']['k']
+
+            # Ethnicity
+            if newRow[8] == 'Hispanic or Latino':
+                newRow[8] = options['ethnicity']['a']
+            elif newRow[8] == 'Not Hispanic or Latino':
+                newRow[8] = options['ethnicity']['b']
+            elif newRow[8] == '':
+                newRow[8] = options['ethnicity']['c']
+
+            # HouseholdIncomeBand
+            if newRow[13] == '<30%':
+                newRow[13] = options['incomeBand']['a']
+            elif newRow[13] == '30-49%':
+                newRow[13] = options['incomeBand']['b']
+            elif newRow[13] == '50-79%':
+                newRow[13] = options['incomeBand']['e']
+            elif newRow[13] == '80-100%':
+                newRow[13] = options['incomeBand']['d']
+            elif newRow[13] == '100%-120%' or newRow[13] == '>120%':
+                newRow[13] = options['incomeBand']['e']
+            elif newRow[13] == '':
+                newRow[13] = options['incomeBand']['f']
+
+            #Street Corrections
             # This will break out the street numbers from the addresses
-            # directions = ['N', 'S', 'E', 'W']
+            directions = ['N', 'S', 'E', 'W']
 
-            # street_array = newRow[21].split()
-            # if street_array:
-            #     # street_direction 
-            #     # street_numbers
-            #     # newAddress
+            street_array = newRow[16].split()
+            if street_array:
+                # street_direction 
+                # street_numbers
+                # newAddress
 
-            #     if street_array[0][0] in directions:
-            #         street_direction = street_array[0][0]
-            #         street_numbers = street_array[0][1:]
-            #         street_array[0] = street_direction
-            #         newAddress = ' '.join(street_array)
-            #     else:
-            #         street_numbers = street_array[0]
-            #         newAddress = ' '.join(street_array[1:])
+                if street_array[0][0] in directions:
+                    street_direction = street_array[0][0]
+                    street_numbers = street_array[0][1:]
+                    street_array[0] = street_direction
+                    newAddress = ' '.join(street_array)
+                else:
+                    street_numbers = street_array[0]
+                    newAddress = ' '.join(street_array[1:])
             
-            #     newRow[20] = street_numbers
-            #     newRow[21] = newAddress
+                newRow[15] = street_numbers
+                newRow[16] = newAddress
+
+            # Rural Status
+            if newRow[23] == 'Household Lives in a Rural Area':
+                newRow[23] = options['ruralStatus'][0]
+            elif newRow[23] == 'Household Does Not Live in a Rural Area':
+                newRow[23] = options['ruralStatus'][1]
+            elif newRow[23] == '':
+                newRow[23] = options['ruralStatus'][2]
             
+            # English Proficiency
+            if newRow[24] == 'No English':
+                newRow[24] = options['englishProficiency'][0]
+            elif newRow[24] == 'English':
+                newRow[24] = options['englishProficiency'][1]
+            elif newRow[24] == '':
+                newRow[24] = options['englishProficiency'][2]
+
 
             w.writerow(newRow)
 
