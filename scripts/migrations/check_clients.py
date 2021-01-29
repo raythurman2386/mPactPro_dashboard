@@ -42,95 +42,140 @@ def check_clients(masterFile, outputFileName, length):
             #     newRow[1] = options['status'][]
 
             # Gender
-            if newRow[6] == '1':
-                newRow[6] = options['gender'][0]
-            elif newRow[6] == '2':
-                newRow[6] = options['gender'][1]
+            # if newRow[6] == '1':
+            #     newRow[6] = options['gender'][0]
+            # elif newRow[6] == '2':
+            #     newRow[6] = options['gender'][1]
 
             # Race
-            if newRow[7] == 'Native American/American Indian':
-                newRow[7] = options['race']['a']
-            elif newRow[7] == 'Black/African American':
-                newRow[7] = options['race']['c']
-            elif newRow[7] == 'White/Caucasian':
-                newRow[7] = options['race']['e']
-            elif newRow[7] == 'Hispanic/Latino':
-                newRow[7] = options['race']['j']
-            elif newRow[7] == 'Multi-Race':
-                newRow[7] = options['race']['j']
-            # elif newRow[7] == 'Not Reported':
-            #     newRow[7] = options['race']['k']
-            # elif newRow[7] == 'Not Reported':
-            #     newRow[7] = options['race']['k']
-            # elif newRow[7] == 'Not Reported':
-            #     newRow[7] = options['race']['k']
-            # elif newRow[7] == 'Not Reported':
-            #     newRow[7] = options['race']['k']
-            elif newRow[7] == 'Other':
-                newRow[7] = options['race']['j']
-            elif newRow[7] == 'Not Reported' or newRow[7] == '':
-                newRow[7] = options['race']['k']
+            if newRow[9] == 'Native American/American Indian' or newRow[9] == 'a.':
+                newRow[9] = options['race']['a']
+            elif newRow[9] == 'Black/African American' or newRow[9] == 'c.':
+                newRow[9] = options['race']['c']
+            elif newRow[9] == 'White/Caucasian' or newRow[9] == 'e.' or newRow[9] == 'e':
+                newRow[9] = options['race']['e']
+            elif newRow[9] == 'Hispanic/Latino':
+                newRow[9] = options['race']['j']
+            elif newRow[9] == 'Multi-Race':
+                newRow[9] = options['race']['j']
+            # elif newRow[9] == 'Not Reported':
+            #     newRow[9] = options['race']['k']
+            # elif newRow[9] == 'Not Reported':
+            #     newRow[9] = options['race']['k']
+            # elif newRow[9] == 'Not Reported':
+            #     newRow[9] = options['race']['k']
+            # elif newRow[9] == 'Not Reported':
+            #     newRow[9] = options['race']['k']
+            elif newRow[9] == 'Other' or newRow[9] == 'j.':
+                newRow[9] = options['race']['j']
+            elif newRow[9] == 'Not Reported' or newRow[9] == '':
+                newRow[9] = options['race']['k']
 
             # Ethnicity
-            if newRow[8] == 'Hispanic or Latino':
-                newRow[8] = options['ethnicity']['a']
-            elif newRow[8] == 'Not Hispanic or Latino':
-                newRow[8] = options['ethnicity']['b']
-            elif newRow[8] == '':
-                newRow[8] = options['ethnicity']['c']
+            if newRow[10] == 'Hispanic or Latino' or newRow[10] == 'a.':
+                newRow[10] = options['ethnicity']['a']
+            elif newRow[10] == 'Not Hispanic or Latino' or newRow[10] == 'b.':
+                newRow[10] = options['ethnicity']['b']
+            elif newRow[10] == '':
+                newRow[10] = options['ethnicity']['c']
 
             # HouseholdIncomeBand
-            if newRow[13] == '<30%':
-                newRow[13] = options['incomeBand']['a']
-            elif newRow[13] == '30-49%':
-                newRow[13] = options['incomeBand']['b']
-            elif newRow[13] == '50-79%':
-                newRow[13] = options['incomeBand']['e']
-            elif newRow[13] == '80-100%':
-                newRow[13] = options['incomeBand']['d']
-            elif newRow[13] == '100%-120%' or newRow[13] == '>120%':
-                newRow[13] = options['incomeBand']['e']
-            elif newRow[13] == '':
-                newRow[13] = options['incomeBand']['f']
+            if newRow[17] == '<30%' or newRow[17] == '1':
+                newRow[17] = options['incomeBand']['a']
+            elif newRow[17] == '30-49%' or newRow[17] == '2':
+                newRow[17] = options['incomeBand']['b']
+            elif newRow[17] == '50-79%' or newRow[17] == '3':
+                newRow[17] = options['incomeBand']['e']
+            elif newRow[17] == '80-100%' or newRow[17] == '4':
+                newRow[17] = options['incomeBand']['d']
+            elif newRow[17] == '100%-120%' or newRow[17] == '>120%' or newRow[17] == '5':
+                newRow[17] = options['incomeBand']['e']
+            elif newRow[17] == '' or newRow[17] == '6':
+                newRow[17] = options['incomeBand']['f']
 
             #Street Corrections
             # This will break out the street numbers from the addresses
-            directions = ['N', 'S', 'E', 'W']
+            # directions = ['N', 'S', 'E', 'W']
 
-            street_array = newRow[16].split()
-            if street_array:
-                # street_direction 
-                # street_numbers
-                # newAddress
+            # street_array = newRow[16].split()
+            # if street_array:
+            #     # street_direction 
+            #     # street_numbers
+            #     # newAddress
 
-                if street_array[0][0] in directions:
-                    street_direction = street_array[0][0]
-                    street_numbers = street_array[0][1:]
-                    street_array[0] = street_direction
-                    newAddress = ' '.join(street_array)
-                else:
-                    street_numbers = street_array[0]
-                    newAddress = ' '.join(street_array[1:])
+            #     if street_array[0][0] in directions:
+            #         street_direction = street_array[0][0]
+            #         street_numbers = street_array[0][1:]
+            #         street_array[0] = street_direction
+            #         newAddress = ' '.join(street_array)
+            #     else:
+            #         street_numbers = street_array[0]
+            #         newAddress = ' '.join(street_array[1:])
             
-                newRow[15] = street_numbers
-                newRow[16] = newAddress
+            #     newRow[15] = street_numbers
+            #     newRow[16] = newAddress
 
             # Rural Status
-            if newRow[23] == 'Household Lives in a Rural Area':
-                newRow[23] = options['ruralStatus'][0]
-            elif newRow[23] == 'Household Does Not Live in a Rural Area':
-                newRow[23] = options['ruralStatus'][1]
-            elif newRow[23] == '':
-                newRow[23] = options['ruralStatus'][2]
+            if newRow[27] == 'Household Lives in a Rural Area' or newRow[27] == 'a.':
+                newRow[27] = options['ruralStatus'][0]
+            elif newRow[27] == 'Household Does Not Live in a Rural Area' or newRow[27] == 'b.':
+                newRow[27] = options['ruralStatus'][1]
+            elif newRow[27] == '' or newRow[27] == 'c.':
+                newRow[27] = options['ruralStatus'][2]
             
-            # English Proficiency
-            if newRow[24] == 'No English':
-                newRow[24] = options['englishProficiency'][0]
-            elif newRow[24] == 'English':
-                newRow[24] = options['englishProficiency'][1]
-            elif newRow[24] == '':
-                newRow[24] = options['englishProficiency'][2]
+            # # English Proficiency
+            if newRow[28] == 'No English' or newRow[28] == 'b.':
+                newRow[28] = options['englishProficiency'][0]
+            elif newRow[28] == 'English' or newRow[28] == 'a.':
+                newRow[28] = options['englishProficiency'][1]
+            elif newRow[28] == '':
+                newRow[28] = options['englishProficiency'][2]
 
+            # Marital Status
+            if newRow[64] == 'Unmarried':
+                newRow[64] = options['maritalStatus']['a']
+            # elif newRow[64] == '':
+            #     pass
+            
+            # Household Type
+            if newRow[66] == '1':
+                newRow[66] = options['householdType']['a']
+            elif newRow[66] == '2':
+                newRow[66] = options['householdType']['b']
+            elif newRow[66] == '3':
+                newRow[66] = options['householdType']['c']
+            elif newRow[66] == '4':
+                newRow[66] = options['householdType']['d']
+            elif newRow[66] == '5':
+                newRow[66] = options['householdType']['e']
+            elif newRow[66] == '6':
+                newRow[66] = options['householdType']['f']
+            elif newRow[66] == '7':
+                newRow[66] = options['householdType']['g']
+
+            # Referal Source
+            if newRow[68] == '1':
+                newRow[68] = options['referalSource']['a']
+            elif newRow[68] == '2':
+                newRow[68] = options['referalSource']['b']
+            elif newRow[68] == '3':
+                newRow[68] = options['referalSource']['c']
+            elif newRow[68] == '4':
+                newRow[68] = options['referalSource']['d']
+            elif newRow[68] == '5':
+                newRow[68] = options['referalSource']['e']
+            elif newRow[68] == '6':
+                newRow[68] = options['referalSource']['f']
+            elif newRow[68] == '7':
+                newRow[68] = options['referalSource']['g']
+            elif newRow[68] == '8':
+                newRow[68] = options['referalSource']['h']
+            elif newRow[68] == '9':
+                newRow[68] = options['referalSource']['i']
+            elif newRow[68] == '10':
+                newRow[68] = options['referalSource']['j']
+            elif newRow[68] == '11':
+                newRow[68] = options['referalSource']['k']
 
             w.writerow(newRow)
 

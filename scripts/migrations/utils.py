@@ -46,5 +46,34 @@ options = {
         'f': '6. Chose not to respond'
     },
     'ruralStatus': ['a. Household lives in a rural area', 'b. Household does not live in a rural area', 'c. Chose not to respond'],
-    'englishProficiency': ['a. Household is Limited English Proficient', 'b . Household is not Limited English Proficient', 'c. Chose not to respond']
+    'englishProficiency': ['a. Household is Limited English Proficient', 'b . Household is not Limited English Proficient', 'c. Chose not to respond'],
+    'maritalStatus': {
+        'a': 'Single',
+        'b': 'Married',
+        'c': 'Divorced',
+        'd': 'Seperated',
+        'e': 'Widowed',
+    },
+    'householdType': {
+        'a': '1. Female headed single parent household',
+        'b': '2. Male headed single parent household',
+        'c': '3. Single adult',
+        'd': '4. Two or more unrelated adults',
+        'e': '5. Married with children',
+        'f': '6. Married without children',
+        'g': '7. Other',
+    },
+    'referalSource': {
+        'a': '1. Print Advertisement',
+        'b': '2. Bank',
+        'c': '3. Government',
+        'd': '4. TV',
+        'e': '5. Realtor',
+        'f': '6. Staff/Board Member',
+        'g': '7. Walk-in',
+        'h': '8. Friend',
+        'i': '9. Radio',
+        'j': '10. Newspaper Article',
+        'k': '11. Other',
+    }
 }
