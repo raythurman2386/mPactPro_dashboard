@@ -2,6 +2,12 @@ from utils import options
 
 def fix_data(client):
   # Correct client case status index 1
+  if client[1] == 'In-Process':
+    client[1] = options['status'][1]
+  elif client[1] == 'Fulfilled':
+    client[1] = options['status'][2]
+  elif client[1] == 'Suspended':
+    client[1] = options['status'][4]
 
   # Correct Client Program Enrollment index 2
   if client[2] == 'Financial Capability Counseling':
@@ -34,6 +40,18 @@ def fix_data(client):
 
 
   # Correct Income Band index 17
+  if client[17] == '<30%' or client[17] == '1':
+    client[17] = options['incomeBand']['a']
+  elif client[17] == '30-49%' or client[17] == '2':
+    client[17] = options['incomeBand']['b']
+  elif client[17] == '50-79%' or client[17] == '3':
+    client[17] = options['incomeBand']['e']
+  elif client[17] == '80-100%' or client[17] == '4':
+    client[17] = options['incomeBand']['d']
+  elif client[17] == '100%-120%' or client[17] == '>120%' or client[17] == '5':
+    client[17] = options['incomeBand']['e']
+  elif client[17] == '' or client[17] == '6':
+    client[17] = options['incomeBand']['f']
 
   # Correct Rural Status index 27
   if client[27] == 'a. Household lives in a rural area':
