@@ -1,4 +1,3 @@
-import json
 from openpyxl import load_workbook, Workbook
 from correct_client import fix_data
 import sys
@@ -9,7 +8,15 @@ masterFile = sys.argv[1]
 
 # This is the file that will be getting corrected
 file = load_workbook(filename=masterFile, data_only=True)
+
 client_sheet = file.active
+
+# When updating to work with cases/sessions/notes
+# Pass these sheets into another file to parse each
+# individual item and correct separately
+# case_sheet = file['Case']
+# session_sheet = file['Session']
+# note_sheet = file['Note']
 
 # This will be a new workbook that we save our corrected values to
 workbook = Workbook()
@@ -107,6 +114,7 @@ for row in client_sheet.iter_rows(min_row=2, values_only=True, min_col=2):
     'CompletedDate': row[71],
     'InactiveDate': row[72]
   }
+  # Save the client by the ID for easy Access
   clients[client_id] = client
 
 # Append our proper header to the new worksheet
