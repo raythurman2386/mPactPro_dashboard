@@ -8,7 +8,7 @@ def get_length(i):
 
         for row in r:
             count += 1
-    
+
     return count
 
 
@@ -18,13 +18,13 @@ def validate_dates(d):
 
 
 options = {
-    'status': ['New Intake', 'Active', 'Completed', 'Withdrew', 'Inactive', 'Completed - Education Only'],
-    'programEnrollment': ['Home Purchase', 'Mortgage Modification', 'Homelessness Assistance', 'Rental Topics', 'Homeowner Services', 'Education Services'],
+    'ClientCaseStatus': ['New Intake', 'Active', 'Completed', 'Withdrew', 'Inactive', 'Completed - Education Only'],
+    'ClientProgramEnrollment': ['Home Purchase', 'Mortgage Modification', 'Homelessness Assistance', 'Rental Topics', 'Homeowner Services', 'Education Services'],
     'gender': ['Male', 'Female'],
     'race': {
-        'a': 'a. American Indian/Alaskan Native', 
-        'b': 'b. Asian', 
-        'c': 'c. Black or African American', 
+        'a': 'a. American Indian/Alaskan Native',
+        'b': 'b. Asian',
+        'c': 'c. Black or African American',
         'd': 'd. Native Hawaiian or Other Pacific Islander',
         'e': 'e. White',
         'f': 'f. American Indian or Alaska Native and White',
@@ -34,8 +34,8 @@ options = {
         'j': 'j. Other multiple race',
         'k': 'k. Chose not to respond'},
     'ethnicity': {
-        'a': 'a. Hispanic', 
-        'b': 'b. Not Hispanic', 
+        'a': 'a. Hispanic',
+        'b': 'b. Not Hispanic',
         'c': 'c. Chose not to respond'},
     'incomeBand': {
         'a': '1. Below 30% of AMI',
@@ -63,7 +63,7 @@ options = {
         'f': '6. Married without children',
         'g': '7. Other',
     },
-    'referalSource': {
+    'referralSource': {
         'a': '1. Print Advertisement',
         'b': '2. Bank',
         'c': '3. Government',

@@ -1,6 +1,6 @@
 import csv
-import re
-from utils import get_length, options, validate_dates
+from utils import get_length, options
+
 
 def check_clients(masterFile, outputFileName, length):
     # Work with the masterfile
@@ -19,12 +19,12 @@ def check_clients(masterFile, outputFileName, length):
         for row in r:
             # Changes to individuals will need done through here
             newRow = []
-            
+
             # Add all items to a new row to alter
             for item in row:
                 newRow.append(item)
 
-            # THE NUMBERS IN THE FOLLOWING ROWS COULD POTENTIALLY NEED UPDATED IF AGENCIES DIDN'T 
+            # THE NUMBERS IN THE FOLLOWING ROWS COULD POTENTIALLY NEED UPDATED IF AGENCIES DIDN'T
             # FOLLOW OUR EXACT TEMPLATE, CHECK NUMBERS BEFORE RUNNING
 
             # ClientCaseStatus
@@ -99,7 +99,7 @@ def check_clients(masterFile, outputFileName, length):
 
             # street_array = newRow[16].split()
             # if street_array:
-            #     # street_direction 
+            #     # street_direction
             #     # street_numbers
             #     # newAddress
 
@@ -111,7 +111,7 @@ def check_clients(masterFile, outputFileName, length):
             #     else:
             #         street_numbers = street_array[0]
             #         newAddress = ' '.join(street_array[1:])
-            
+
             #     newRow[15] = street_numbers
             #     newRow[16] = newAddress
 
@@ -122,7 +122,7 @@ def check_clients(masterFile, outputFileName, length):
                 newRow[27] = options['ruralStatus'][1]
             elif newRow[27] == '' or newRow[27] == 'c.':
                 newRow[27] = options['ruralStatus'][2]
-            
+
             # # English Proficiency
             if newRow[28] == 'No English' or newRow[28] == 'b.':
                 newRow[28] = options['englishProficiency'][0]
@@ -136,7 +136,7 @@ def check_clients(masterFile, outputFileName, length):
                 newRow[64] = options['maritalStatus']['a']
             # elif newRow[64] == '':
             #     pass
-            
+
             # Household Type
             if newRow[66] == '1':
                 newRow[66] = options['householdType']['a']
