@@ -5,10 +5,8 @@ import sys
 import os
 
 # This is the file that will be corrected
-# masterFile = sys.argv[1]
-masterFile = "AHFFL.xlsx"
+masterFile = sys.argv[1]
 
-# TODO: Swap out hardcoded filename with masterFile
 # This is the file that will be getting corrected
 file = load_workbook(filename=masterFile, data_only=True)
 client_sheet = file.active
@@ -35,6 +33,7 @@ for row in client_sheet.iter_rows(min_row=2, values_only=True, min_col=2):
   client_id = row[0]
   # TODO: IF THE HEADER COLUMNS ARE IN DIFFERENT LOCATIONS, UPDATE THE VALUES FOR THE CLIENT!!!!!
   client = {
+    'clientId': row[0],
     'ClientCaseStatus': row[1],
     'ClientProgramEnrollment': row[2],
     'ActiveStaff': row[3],
@@ -116,9 +115,7 @@ sheet.title = 'Clients'
 
 # Add each client to the new spreadsheet
 for client in clients:
-  client_id = client
   client_list = [v for k, v in clients[client].items()]
-  client_list.insert(0, client_id)
 
   # TODO: Fix client data to match our requirements
   corrected_client = fix_data(client_list)

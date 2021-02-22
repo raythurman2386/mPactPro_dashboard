@@ -63,6 +63,16 @@ options = {
         'f': '6. Married without children',
         'g': '7. Other',
     },
+    'education': {
+      'a': '1. Below High School Diploma',
+      'b': '2. High School Diploma or Equivalent',
+      'c': '3. Two-Year College',
+      'd': '4. Bachelors Degree',
+      'e': '5. Masters Degree',
+      'f': '6. Above Masters Degree',
+      'g': 'Unknown',
+      'h': 'Other'
+    },
     'referralSource': {
         'a': '1. Print Advertisement',
         'b': '2. Bank',
