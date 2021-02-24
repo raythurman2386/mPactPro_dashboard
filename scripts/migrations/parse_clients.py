@@ -11,13 +11,6 @@ file = load_workbook(filename=masterFile, data_only=True)
 
 client_sheet = file.active
 
-# When updating to work with cases/sessions/notes
-# Pass these sheets into another file to parse each
-# individual item and correct separately
-# case_sheet = file['Case']
-# session_sheet = file['Session']
-# note_sheet = file['Note']
-
 # This will be a new workbook that we save our corrected values to
 workbook = Workbook()
 sheet = workbook.active
