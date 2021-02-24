@@ -13,7 +13,7 @@ import os
 
 # This will be a new workbook that we save our corrected values to
 workbook = load_workbook(filename='HOI_modified.xlsx', data_only=True)
-sheet = workbook.create_sheet('Cases')
+sheet = workbook.create_sheet('Case')
 
 # Create a hashtable to keep track of cases
 cases = {}
@@ -87,7 +87,7 @@ template_header = ['CaseType', 'ClientID', 'AssignedCounselor', 'AssignedCoach',
 
 # Append our proper header to the new worksheet
 sheet.append(template_header)
-sheet.title = 'Cases'
+sheet.title = 'Case'
 
 # Add each client to the new spreadsheet
 # for case in cases:
