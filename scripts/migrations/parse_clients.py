@@ -1,7 +1,5 @@
 from openpyxl import load_workbook, Workbook
-from tkinter import *
-from tkinter import ttk
-from correct_client import fix_data
+from correct_client import fix_client_data
 import sys
 import os
 
@@ -9,6 +7,7 @@ import os
 masterFile = sys.argv[1]
 
 # This is the file that will be getting corrected
+# data_only flag will only bring in the data and no excel functions
 file = load_workbook(filename=masterFile, data_only=True)
 
 client_sheet = file.active
@@ -38,55 +37,43 @@ template_header = ['ClientID', 'ClientCaseStatus', 'ClientProgramEnrollment', 'A
                    'ReferralSource', 'LastContact', 'ActiveReportDateHUD', 'CompletedDate', 'InactiveDate']
 
 
-# **********************************************************************
-# Playing around with Tkinter to build a ui for this tool.
-# This may or may not need moved from this file.
-# Experimenting
-# root = Tk()
-# root.title('Agency Data Migration Assistant')
-#
-# mainframe = ttk.Frame(root, padding='3 3 12 12')
-# mainframe.grid(column=0, row=0, sticky=(N,W,E,S))
-# root.columnconfigure(0, weight=1)
-# root.rowconfigure(0, weight=1)
-
-
-# **********************************************************************
-
 # Fill our clients hash table with every client
-for row in client_sheet.iter_rows(min_row=2, values_only=True, min_col=2):
-    client_id = row[60]
+for row in client_sheet.iter_rows(min_row=23, values_only=True, min_col=2):
+    client_id = row[0]
+    # Uncomment if the name needs split to first and last
+    # if row[3] is not None:
+    #     split_name = row[3].split(' ')
     # TODO: IF THE HEADER COLUMNS ARE IN DIFFERENT LOCATIONS, UPDATE THE VALUES FOR THE CLIENT!!!!!
     client = {
       'clientId': client_id,
-      'ClientCaseStatus': None,
+      'ClientCaseStatus': row[1],
       'ClientProgramEnrollment': row[2],
       'ActiveStaff': None,
-      'ClientFirstName': row[5],
+      'ClientFirstName': split_name[0],
       'ClientMiddleName': None,
-      'ClientLastName': row[6],
-      'DateOfBirth': row[36],
-      'Gender': row[84],
-      'Race': row[108],
-      'Ethnicity': row[88],
-      'VeteranStatus': row[97],
+      'ClientLastName': split_name[1],
+      'DateOfBirth': None,
+      'Gender': row[4],
+      'Race': row[5],
+      'Ethnicity': row[6],
+      'VeteranStatus': row[7],
       'ActiveMilitary': None,
-      'FirstTimeHomebuyer': row[115],
-      'HouseholdSize': None,
-      'CountyAmiIncomeLimit': None,
-      'HouseholdIncome': row[116],
-      'HouseholdIncomeBand': None,
-      'IntakeDate': None,
+      'FirstTimeHomebuyer': row[8],
+      'HouseholdSize': row[9],
+      'CountyAmiIncomeLimit': row[10],
+      'HouseholdIncome': row[11],
+      'HouseholdIncomeBand': row[12],
+      'IntakeDate': row[13],
       'StreetNumber': None,
-      'StreetName': row[16],
+      'StreetName': row[14],
       'ApartmentNumber': None,
-      'ClientCity': row[17],
-      'ClientCounty': None,
-      'ClientState': row[18],
-      'ClientZip': row[19],
+      'ClientCity': row[15],
+      'ClientCounty': row[16],
+      'ClientState': row[17],
+      'ClientZip': row[18],
       'PrivacyOptOut': None,
-      'RuralAreaStatus': row[109],
-      'EnglishProficiencyLevel': row[75],
+      'RuralAreaStatus': row[19],
+      'EnglishProficiencyLevel': row[20],
       'BillToHud': None,
       '8a': None,
       '8b': None,
@@ -118,18 +105,18 @@ for row in client_sheet.iter_rows(min_row=2, values_only=True, min_col=2):
       '10m': None,
       'PhoneNumberMobile': None,
       'PhoneNumberWork': None,
-      'PhoneNumberHome': row[27],
-      'ImmigrationStatus': row[59],
-      'EmailHome': row[31],
+      'PhoneNumberHome': None,
+      'ImmigrationStatus': None,
+      'EmailHome': None,
       'EmailWork': None,
-      'MaritalStatus': row[92],
-      'Disability': row[71],
-      'HouseholdType': row[85],
-      'Education': row[74],
-      'ReferralSource': row[61],
-      'LastContact': None,
+      'MaritalStatus': row[21],
+      'Disability': row[22],
+      'HouseholdType': row[23],
+      'Education': row[24],
+      'ReferralSource': row[25],
+      'LastContact': row[26],
       'ActiveReportDateHUD': None,
-      'CompletedDate': None,
+      'CompletedDate': row[27],
       'InactiveDate': None
     }
     # Save the client by the ID for easy Access
@@ -144,7 +131,11 @@ for client in clients:
     client_list = [v for k, v in clients[client].items()]
 
     # TODO: Fix client data to match our requirements
-    corrected_client = fix_data(client_list)
+    # If the address needs split, pass True along with the client list
+    # If correcting address use this variable instead
+    corrected_client = fix_client_data(client_list, True)
+    # If the address does not need split this is the one to use
+    # corrected_client = fix_client_data(client_list)
 
     # Add corrected client to the worksheet
     sheet.append(corrected_client)

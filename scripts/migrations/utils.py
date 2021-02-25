@@ -1,4 +1,8 @@
 options = {
+    'yes_no': {
+        'a': 'Yes',
+        'b': 'No'
+    },
     'ClientCaseStatus': {
         'a': 'New Intake',
         'b': 'Active',
