@@ -1,25 +1,20 @@
-import csv
-from datetime import date, datetime
-# Helper fn to get length of files
-def get_length(i):
-    count = 0
-    with open(i) as f:
-        r = csv.reader(f)
-
-        for row in r:
-            count += 1
-
-    return count
-
-
-def validate_dates(d):
-    return datetime.strptime(d, '%m/%d/%y').strftime('%m/%d/%y')
-
-
-
 options = {
-    'ClientCaseStatus': ['New Intake', 'Active', 'Completed', 'Withdrew', 'Inactive', 'Completed - Education Only'],
-    'ClientProgramEnrollment': ['Home Purchase', 'Mortgage Modification', 'Homelessness Assistance', 'Rental Topics', 'Homeowner Services', 'Education Services'],
+    'ClientCaseStatus': {
+        'a': 'New Intake',
+        'b': 'Active',
+        'c': 'Completed',
+        'd': 'Withdrew',
+        'e': 'Inactive',
+        'f': 'Completed - Education Only'
+    },
+    'ClientProgramEnrollment': {
+        'a': 'Home Purchase',
+        'b': 'Mortgage Modification',
+        'c': 'Homelessness Assistance',
+        'd': 'Rental Topics',
+        'e': 'Homeowner Services',
+        'f': 'Education Services'
+    },
     'gender': ['Male', 'Female'],
     'race': {
         'a': 'a. American Indian/Alaskan Native',
@@ -45,8 +40,16 @@ options = {
         'e': '5. 101% - 120% of AMI',
         'f': '6. Chose not to respond'
     },
-    'ruralStatus': ['a. Household lives in a rural area', 'b. Household does not live in a rural area', 'c. Chose not to respond'],
-    'englishProficiency': ['a. Household is Limited English Proficient', 'b . Household is not Limited English Proficient', 'c. Chose not to respond'],
+    'ruralStatus': {
+        'a': 'a. Household lives in a rural area',
+        'b': 'b. Household does not live in a rural area',
+        'c': 'c. Chose not to respond'
+    },
+    'englishProficiency': {
+        'a': 'a. Household is Limited English Proficient',
+        'b': 'b . Household is not Limited English Proficient',
+        'c': 'c. Chose not to respond'
+    },
     'maritalStatus': {
         'a': 'Single',
         'b': 'Married',
@@ -85,5 +88,130 @@ options = {
         'i': '9. Radio',
         'j': '10. Newspaper Article',
         'k': '11. Other',
+    }
+}
+
+
+case_options = {
+    'caseType': {
+        'a': 'Home Purchase',
+        'b': 'Seeking Shelter',
+        'c': 'Home Owner Services',
+        'd': 'Mortgage Modification',
+        'e': 'Rental topics'
+    },
+    'homePurchaseClientType': {
+        'a': 'Pre Purchase Counseling Client',
+        'b': 'Pre Purchase Education Client',
+        'c': 'eHome America Education Client',
+        'd': 'Financial Literacy Client'
+    },
+    'homePurchaseFacilitation': {
+        'a': 'Financial Literacy',
+        'b': 'Home Purchase'
+    },
+    'clientCaseStatus': {
+        'a': 'Home Purchase Case',
+        'b': 'Long Term Client',
+        'c': 'Short Term Client',
+        'd': 'Near Mortgage Ready',
+        'e': 'Mortgage Ready',
+        'f': 'Internal Financing',
+        'g': 'External Financing',
+        'h': 'Denied',
+        'i': 'Withdrew',
+        'j': 'Inactive',
+        'k': 'Completed',
+        'l': 'New Mortgage Modification Case',
+        'm': 'Level 1 Client',
+        'n': 'Level 2 Client',
+        'o': 'Homelessness Assistance Case',
+        'p': 'Rental Topics Case'
+    },
+    'yes_no': {
+        'a': 'Yes',
+        'b': 'No'
+    },
+    'rentalResolution': {
+        'a': 'Found Alternative',
+        'b': 'Suspended',
+        'c': 'Decided to Remain in Current Housing',
+        'd': 'Received Housing Search Assistance',
+        'e': 'Referred to Other Agency w/ Rental Assistance',
+        'f': 'Referred to Other Agency w/ Social Assistance',
+        'g': 'Advised on Re-Cert for HUD',
+        'h': 'Counseled/Referred to Legal Aid',
+        'i': 'Entered Debt Management/Repayment Plan',
+        'j': 'Temp Rental Relief',
+        'k': 'Counseled and Utilities Brought Current',
+        'l': 'Resolved Security Deposit Dispute',
+        'm': 'Resolved issue in Current Tenacy'
+    },
+    'lmPackageStatus': {
+        'a': 'New',
+        'b': 'In Progress',
+        'c': 'Complete',
+        'd': 'Incomplete'
+    },
+    'seekingShelterResolution': {
+        'a': 'Suspended',
+        'b': 'Emergency Shelter',
+        'c': 'Transitional Housing',
+        'd': 'Remained in Housing',
+        'e': 'Remained Homeless',
+        'f': 'Permanent Housing w/Rental Assistance',
+        'g': 'Permanent Housing w/out Rental Assistance',
+        'h': 'Referred to Other Social Service Agency'
+    },
+    'homeOwnerResolutions': {
+        'a': 'Counseled On HECM; Declined',
+        'b': 'Referred To other Agency',
+        'c': 'Obtained HECM',
+        'd': 'Received Home Equity/Home Improvement',
+        'e': 'Mortgage Refinanced',
+        'f': 'Sold House, Chose Alt. Housing Solution',
+        'g': 'Suspended',
+        'h': 'Received Consumer Loan (Unsecured)',
+        'i': 'Obtained a Non-FHA Reverse Mortgage Loan',
+        'j': 'Completed Financial Management/Budget Counseling',
+        'k': 'Complete Home Maintenance Counseling',
+        'l': 'Counseled and Utilities Brought Current',
+        'm': 'Counseled/Referred for Legal Assistance'
+    },
+    'homePurchaseResolution': {
+        'a': 'New File',
+        'b': 'Closed-Financial Literacy',
+        'c': 'Open Case',
+        'd': 'Closed-Home Purchased'
+    }
+}
+
+
+session_options = {
+    'sessionType': {
+        'a': 'General Session',
+        'b': 'General Session',
+        'c': 'Client Did Not Show',
+        'd': 'Level 1 Session',
+        'e': 'Level 2 Session',
+        'f': 'Level 1 & 2 Session',
+        'g': 'Long Term - Pre-Purchase Home Buyer Counseling',
+        'h': 'Short Term - Pre-Purchase Home Buyer Counseling',
+        'i': 'Near Mortgage Ready - Pre-Purchase Home Buyer Counseling',
+        'j': 'Mortgage Ready - Pre-Purchase Home Buyer Counseling',
+        'k': 'Internal Closing Counseling Session',
+        'l': 'General Coaching',
+        'm': 'Education Follow-Up',
+        'n': 'Financial management/ budget counseling',
+        'o': 'Homelessness Assistance Counseling',
+        'p': 'Rental Topics Work Session',
+        'q': 'Homeowner Services Work Session',
+        'r': 'Reverse Mortgage Counseling'
+    },
+    'billableTo': {
+        'a': 'Non-Billable',
+        'b': 'HUD',
+        'c': 'Neighborworks',
+        'd': 'Other'
     }
 }
