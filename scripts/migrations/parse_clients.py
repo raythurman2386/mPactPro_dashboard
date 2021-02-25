@@ -1,4 +1,6 @@
 from openpyxl import load_workbook, Workbook
+from tkinter import *
+from tkinter import ttk
 from correct_client import fix_data
 import sys
 import os
@@ -34,6 +36,22 @@ template_header = ['ClientID', 'ClientCaseStatus', 'ClientProgramEnrollment', 'A
                    'ImmigrationStatus', 'EmailHome', 'EmailWork', 'MaritalStatus', 'Disability', 'HouseholdType',
                    'Education',
                    'ReferralSource', 'LastContact', 'ActiveReportDateHUD', 'CompletedDate', 'InactiveDate']
+
+
+# **********************************************************************
+# Playing around with Tkinter to build a ui for this tool.
+# This may or may not need moved from this file.
+# Experimenting
+# root = Tk()
+# root.title('Agency Data Migration Assistant')
+#
+# mainframe = ttk.Frame(root, padding='3 3 12 12')
+# mainframe.grid(column=0, row=0, sticky=(N,W,E,S))
+# root.columnconfigure(0, weight=1)
+# root.rowconfigure(0, weight=1)
+
+
+# **********************************************************************
 
 # Fill our clients hash table with every client
 for row in client_sheet.iter_rows(min_row=2, values_only=True, min_col=2):

@@ -3,17 +3,17 @@ from utils import options
 
 def fix_data(client):
     try:
-    # Correct client case status index 1
+        # Correct client case status index 1
         if client[1] == 'In-Process':
-            client[1] = options['status'][1]
+            client[1] = options['ClientCaseStatus']['b']
         elif client[1] == 'Fulfilled':
-            client[1] = options['status'][2]
+            client[1] = options['ClientCaseStatus']['c']
         elif client[1] == 'Suspended':
-            client[1] = options['status'][4]
+            client[1] = options['ClientCaseStatus']['e']
 
         # Correct Client Program Enrollment index 2
         if client[2] == 'Financial Capability Counseling':
-            client[2] = options['ClientProgramEnrollment'][4]
+            client[2] = options['ClientProgramEnrollment']['e']
 
         # Correct Gender if needed index 8
         if client[8] == 'M':
@@ -60,7 +60,7 @@ def fix_data(client):
             client[10] = options['ethnicity']['a']
         elif client[10] == 'b.  Not Hispanic' or client[10] == 'Not Hispanic':
             client[10] = options['ethnicity']['b']
-        else:
+        elif client[10] is None:
             client[10] = options['ethnicity']['c']
 
         # Correct Income Band index 17
@@ -69,7 +69,7 @@ def fix_data(client):
         elif client[17] == '30-49%' or client[17] == '2':
             client[17] = options['incomeBand']['b']
         elif client[17] == '50-79%' or client[17] == '3':
-            client[17] = options['incomeBand']['e']
+            client[17] = options['incomeBand']['c']
         elif client[17] == '80-100%' or client[17] == '4':
             client[17] = options['incomeBand']['d']
         elif client[17] == '100%-120%' or client[17] == '>120%' or client[17] == '5':
@@ -79,39 +79,42 @@ def fix_data(client):
 
         # TODO: IF THE ADDRESS DOES NOT NEED CORRECTED COMMENT THIS OUT
         # Correct Street if needed
-        po_variations = ['PO', 'P.O.']
-        if client[20] is not None:
-            street_arr = client[20].split()
-            if street_arr[0] not in po_variations:
-                street_num = street_arr[0]
-                new_address = ' '.join(street_arr[1:])
-                client[19] = street_num
-                client[20] = new_address
-            else:
-                client[20] = ' '.join(street_arr)
+        # po_variations = ['PO', 'P.O.']
+        # if client[20] is not None:
+        #     street_arr = client[20].split()
+        #     if street_arr[0] not in po_variations:
+        #         street_num = street_arr[0]
+        #         new_address = ' '.join(street_arr[1:])
+        #         client[19] = street_num
+        #         client[20] = new_address
+        #     else:
+        #         client[20] = ' '.join(street_arr)
 
         # Correct Rural Status index 27
         if client[27] == 'a. Household lives in a rural area' or client[27] == 'Household lives in a rural area':
-            client[27] = options['ruralStatus'][0]
+            client[27] = options['ruralStatus']['a']
         elif client[27] == 'b. Household does not live in a rural area' or client[
             27] == 'Household does not live in a rural area':
-            client[27] = options['ruralStatus'][1]
-        else:
-            client[27] = options['ruralStatus'][2]
+            client[27] = options['ruralStatus']['b']
+        elif client[27] is None:
+            client[27] = options['ruralStatus']['c']
 
         # Correct English Proficiency index 28
         if client[28] == 'Is not English proficient' or client[28] == 'Household is Limited English Proficient':
-            client[28] = options['englishProficiency'][0]
+            client[28] = options['englishProficiency']['a']
         elif client[28] == 'b . Household is not Limited English Proficient' or client[
             28] == 'Household is not Limited English Proficient':
-            client[28] = options['englishProficiency'][1]
-        else:
-            client[28] = options['englishProficiency'][2]
+            client[28] = options['englishProficiency']['b']
+        elif client[28] is None:
+            client[28] = options['englishProficiency']['c']
 
         # Remove dashes from phone number
         if client[60] is not None:
-            phone_arr = client[60].split('-')
-            client[60] = int(''.join(phone_arr))
+            if '-' in client[60]:
+                phone_arr = client[60].split('-')
+                client[60] = int(''.join(phone_arr))
+            else:
+                pass
 
         # Correct Marital Status index 64
         if client[64] == 'Single':
@@ -122,7 +125,7 @@ def fix_data(client):
             client[64] = options['maritalStatus']['c']
         elif client[64] == 'Widowed':
             client[64] = options['maritalStatus']['e']
-        else:
+        elif client[64] is None:
             client[64] = None
 
         # Correct Household Type index 66
@@ -138,7 +141,6 @@ def fix_data(client):
             client[66] = options['householdType']['f']
         elif client[66] == 'Other':
             client[66] = options['householdType']['g']
-
 
         # Correct Education index 67
         if client[67] == 'Junior High School' or client[67] == 'Elementary':
