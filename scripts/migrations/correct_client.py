@@ -98,8 +98,8 @@ def fix_client_data(client, address=False):
         elif client[27] == 'b. Household does not live in a rural area' or client[
             27] == 'Household does not live in a rural area' or client[27] == 'Does not live in rural area':
             client[27] = options['ruralStatus']['b']
-        elif client[27] is None or client[27] == 'Chose not to respond':
-            client[27] = options['ruralStatus']['c']
+        # elif client[27] is None or client[27] == 'Chose not to respond':
+        #     client[27] = options['ruralStatus']['c']
 
         # Correct English Proficiency index 28
         if client[28] == 'Is not English proficient' or client[28] == 'Household is Limited English Proficient':
