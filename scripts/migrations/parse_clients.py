@@ -1,5 +1,6 @@
 from openpyxl import load_workbook, Workbook
 from correct_client import fix_client_data
+from utils import correct_date
 import sys
 import os
 
@@ -9,6 +10,18 @@ masterFile = sys.argv[1]
 # This is the file that will be getting corrected
 # data_only flag will only bring in the data and no excel functions
 file = load_workbook(filename=masterFile, data_only=True)
+
+# File to act as simple dp to keep track of count var
+# count var will be used for the itemID col
+try:
+    count_file = open("count.txt", "r")
+    count = int(count_file.readlines()[-1])
+    count_file.close()
+except ValueError:
+    count = 1
+except IndexError:
+    count = 1
+
 
 client_sheet = file.active
 
@@ -39,13 +52,14 @@ template_header = ['ClientID', 'ClientCaseStatus', 'ClientProgramEnrollment', 'A
 
 
 # Fill our clients hash table with every client
-count = 1
-for row in client_sheet.iter_rows(min_row=23, values_only=True, min_col=2):
+for row in client_sheet.iter_rows(min_row=2, values_only=True, min_col=1):
     client_id = row[0]
     # Uncomment if the name needs split to first and last
     # if row[3] is not None:
     #     split_name = row[3].split(' ')
     # TODO: IF THE HEADER COLUMNS ARE IN DIFFERENT LOCATIONS, UPDATE THE VALUES FOR THE CLIENT!!!!!
+    # This client matches our Template DO NOT CHANGE end up creating multiple
+    # clients for each different cms we are importing.
     client = {
       'clientId': client_id,
       'ClientCaseStatus': row[1],
@@ -54,7 +68,7 @@ for row in client_sheet.iter_rows(min_row=23, values_only=True, min_col=2):
       'ClientFirstName': row[4],
       'ClientMiddleName': row[5],
       'ClientLastName': row[6],
-      'DateOfBirth': row[7],
+      'DateOfBirth': correct_date(row[7]),
       'Gender': row[8],
       'Race': row[9],
       'Ethnicity': row[10],
@@ -65,7 +79,7 @@ for row in client_sheet.iter_rows(min_row=23, values_only=True, min_col=2):
       'CountyAmiIncomeLimit': row[15],
       'HouseholdIncome': row[16],
       'HouseholdIncomeBand': row[17],
-      'IntakeDate': row[18],
+      'IntakeDate': correct_date(row[18]),
       'StreetNumber': row[19],
       'StreetName': row[20],
       'ApartmentNumber': row[21],
@@ -116,10 +130,10 @@ for row in client_sheet.iter_rows(min_row=23, values_only=True, min_col=2):
       'HouseholdType': row[66],
       'Education': row[67],
       'ReferralSource': row[68],
-      'LastContact': row[69],
-      'ActiveReportDateHUD': row[70],
-      'CompletedDate': row[71],
-      'InactiveDate': row[72],
+      'LastContact': correct_date(row[69]),
+      'ActiveReportDateHUD': correct_date(row[70]),
+      'CompletedDate': correct_date(row[71]),
+      'InactiveDate': correct_date(row[72]),
       'ItemID': count,
       'Source': os.path.splitext(masterFile)[0]
     }
@@ -148,3 +162,8 @@ for client in clients:
 # Save the worksheet when all is complete
 outputFileName = os.path.splitext(masterFile)[0] + "_modified.xlsx"
 workbook.save(filename=outputFileName)
+
+# Save the count var for the next agency
+count_file = open('count.txt', 'w')
+count_file.write(str(count))
+count_file.close()

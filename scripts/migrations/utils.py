@@ -1,3 +1,11 @@
+import datetime
+
+
+def correct_date(date):
+    if date is not None:
+        return date.strftime('%m/%d/%Y')
+
+
 options = {
     'yes_no': {
         'a': 'Yes',
