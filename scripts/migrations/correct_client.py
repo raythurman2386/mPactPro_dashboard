@@ -72,7 +72,7 @@ def fix_client_data(client, address=False):
             client[17] = options['incomeBand']['c']
         elif client[17] == '80-100%' or client[17] == '80 - 100% of AMI':
             client[17] = options['incomeBand']['d']
-        elif client[17] == '100%-120%' or client[17] == '>120%' or client[17] == '> 100% AMI':
+        elif client[17] == '100%-120%' or client[17] == '>120%' or client[17] == '> 100% AMI' or client[17] == '120 - 130%' or client[17] == '130 - 140%' or client[17] == '140 - 150%' or client[17] == 'Over 150%':
             client[17] = options['incomeBand']['e']
         elif client[17] == '' or client[17] == 'Chose not to respond':
             client[17] = options['incomeBand']['f']
