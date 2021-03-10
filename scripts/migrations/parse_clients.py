@@ -52,7 +52,7 @@ template_header = ['ClientID', 'ClientCaseStatus', 'ClientProgramEnrollment', 'A
 
 
 # Fill our clients hash table with every client
-for row in client_sheet.iter_rows(min_row=2, values_only=True, min_col=2):
+for row in client_sheet.iter_rows(min_row=2, values_only=True, min_col=1):
     client_id = row[0]
     # Uncomment if the name needs split to first and last
     # if row[3] is not None:
@@ -91,34 +91,34 @@ for row in client_sheet.iter_rows(min_row=2, values_only=True, min_col=2):
       'RuralAreaStatus': row[27],
       'EnglishProficiencyLevel': row[28],
       'BillToHud': row[29],
-      '8a': row[30],
-      '8b': row[31],
-      '8c': row[32],
-      '8d': row[33],
-      '8e': row[34],
-      '8f': row[35],
-      '8g': row[36],
-      '8h': row[37],
-      '8i': row[38],
-      '9a': row[39],
-      '9b': row[40],
-      '9c': row[41],
-      '9d': row[42],
-      '9e': row[43],
-      '9f': row[44],
-      '10a': row[45],
-      '10b': row[46],
-      '10c': row[47],
-      '10d': row[48],
-      '10e': row[49],
-      '10f': row[50],
-      '10g': row[51],
-      '10h': row[52],
-      '10i': row[53],
-      '10j': row[54],
-      '10k': row[55],
-      '10l': row[56],
-      '10m': row[57],
+      '8a': correct_date(row[30]),
+      '8b': correct_date(row[31]),
+      '8c': correct_date(row[32]),
+      '8d': correct_date(row[33]),
+      '8e': correct_date(row[34]),
+      '8f': correct_date(row[35]),
+      '8g': correct_date(row[36]),
+      '8h': correct_date(row[37]),
+      '8i': correct_date(row[38]),
+      '9a': correct_date(row[39]),
+      '9b': correct_date(row[40]),
+      '9c': correct_date(row[41]),
+      '9d': correct_date(row[42]),
+      '9e': correct_date(row[43]),
+      '9f': correct_date(row[44]),
+      '10a': correct_date(row[45]),
+      '10b': correct_date(row[46]),
+      '10c': correct_date(row[47]),
+      '10d': correct_date(row[48]),
+      '10e': correct_date(row[49]),
+      '10f': correct_date(row[50]),
+      '10g': correct_date(row[51]),
+      '10h': correct_date(row[52]),
+      '10i': correct_date(row[53]),
+      '10j': correct_date(row[54]),
+      '10k': correct_date(row[55]),
+      '10l': correct_date(row[56]),
+      '10m': correct_date(row[57]),
       'PhoneNumberMobile': row[58],
       'PhoneNumberWork': row[59],
       'PhoneNumberHome': row[60],
@@ -133,8 +133,8 @@ for row in client_sheet.iter_rows(min_row=2, values_only=True, min_col=2):
       'LastContact': correct_date(row[69]),
       'ActiveReportDateHUD': correct_date(row[70]),
       'CompletedDate': correct_date(row[71]),
-      'InactiveDate': correct_date(row[72]),
-      'ItemID': count,
+      'InactiveDate': row[72],
+      'Item_id': count,
       'Source': os.path.splitext(masterFile)[0]
     }
     # Save the client by the ID for easy Access
@@ -152,9 +152,9 @@ for client in clients:
     # TODO: Fix client data to match our requirements
     # If the address needs split, pass True along with the client list
     # If correcting address use this variable instead
-    corrected_client = fix_client_data(client_list, True)
+    # corrected_client = fix_client_data(client_list, True)
     # If the address does not need split this is the one to use
-    # corrected_client = fix_client_data(client_list)
+    corrected_client = fix_client_data(client_list)
 
     # Add corrected client to the worksheet
     sheet.append(corrected_client)

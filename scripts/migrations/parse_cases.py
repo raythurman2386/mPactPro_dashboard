@@ -10,8 +10,8 @@ from utils import correct_date
 # case_sheet = file.active
 
 # This will be a new workbook that we save our corrected values to
-workbook = load_workbook(filename='SJHHP.xlsx', data_only=True)
-new_wb = load_workbook(filename='SJHHP_modified.xlsx')
+workbook = load_workbook(filename='SJHP.xlsx', data_only=True)
+new_wb = load_workbook(filename='SJHP_modified.xlsx')
 sheet = workbook['Case']
 new_sheet = new_wb.create_sheet('Case')
 
@@ -101,4 +101,4 @@ for case in cases:
     new_sheet.append(case_list)
 
 # Save the worksheet when all is complete
-new_wb.save(filename='SJHHP_modified_cases.xlsx')
+new_wb.save(filename='SJHP_modified_cases.xlsx')

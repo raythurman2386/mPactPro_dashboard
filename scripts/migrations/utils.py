@@ -2,7 +2,7 @@ import datetime
 
 
 def correct_date(date):
-    if date is not None:
+    if date is not None and date is not str:
         return date.strftime('%m/%d/%Y')
 
 
