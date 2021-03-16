@@ -4,7 +4,7 @@ from openpyxl import load_workbook, Workbook
 # data_only flag will only bring in the data and no excel functions
 file = load_workbook(filename='AccessLiving.xlsx', data_only=True)
 
-client_sheet = file.active
+client_sheet = file['Clients']
 
 # This will be a new workbook that we save our corrected values to
 workbook = Workbook()
@@ -33,7 +33,7 @@ template_header = ['ClientID', 'ClientCaseStatus', 'ClientProgramEnrollment', 'A
 
 
 # Fill our clients hash table with every client
-for row in client_sheet.iter_rows(min_row=1, values_only=True, min_col=1):
+for row in client_sheet.iter_rows(min_row=2, values_only=True, min_col=1):
     client_id = row[0]
     # TODO: IF THE HEADER COLUMNS ARE IN DIFFERENT LOCATIONS, UPDATE THE VALUES FOR THE CLIENT!!!!!
     # This client matches our Template DO NOT CHANGE end up creating multiple
@@ -43,11 +43,11 @@ for row in client_sheet.iter_rows(min_row=1, values_only=True, min_col=1):
       'ClientCaseStatus': None,
       'ClientProgramEnrollment': None,
       'ActiveStaff': None,
-      'ClientFirstName': None,
-      'ClientMiddleName': None,
-      'ClientLastName': None,
-      'DateOfBirth': None,
-      'Gender': None,
+      'ClientFirstName': row[2],
+      'ClientMiddleName': row[3],
+      'ClientLastName': row[4],
+      'DateOfBirth': row[7],
+      'Gender': row[6],
       'Race': None,
       'Ethnicity': None,
       'VeteranStatus': None,
@@ -57,7 +57,7 @@ for row in client_sheet.iter_rows(min_row=1, values_only=True, min_col=1):
       'CountyAmiIncomeLimit': None,
       'HouseholdIncome': None,
       'HouseholdIncomeBand': None,
-      'IntakeDate': None,
+      'IntakeDate': row[12],
       'StreetNumber': None,
       'StreetName': None,
       'ApartmentNumber': None,
@@ -101,8 +101,8 @@ for row in client_sheet.iter_rows(min_row=1, values_only=True, min_col=1):
       'PhoneNumberWork': None,
       'PhoneNumberHome': None,
       'ImmigrationStatus': None,
-      'EmailHome': None,
-      'EmailWork': None,
+      'EmailHome': row[9],
+      'EmailWork': row[10],
       'MaritalStatus': None,
       'Disability': None,
       'HouseholdType': None,
@@ -116,6 +116,37 @@ for row in client_sheet.iter_rows(min_row=1, values_only=True, min_col=1):
       'Source': None
     }
     clients[client_id] = client
+
+# Check other Tabs in original workbook for additional client data
+# Match Client ID with Client in the hash table and update missing fields.
+client_address = file['Address']
+for row in client_address.iter_rows(min_row=2, values_only=True, min_col=1):
+    try:
+        client_id_2 = row[0]
+        if clients[client_id_2]:
+            clients[client_id_2]['StreetName'] = row[5]
+            clients[client_id_2]['ClientCounty'] = row[6]
+            clients[client_id_2]['ClientCity'] = row[7]
+            clients[client_id_2]['ClientState'] = row[8]
+            clients[client_id_2]['ClientZip'] = row[9]
+
+    except KeyError:
+        pass
+
+
+# Check other Tabs in original workbook for additional client data
+# Match Client ID with Client in the hash table and update missing fields.
+client_phone = file['Phone']
+for row in client_phone.iter_rows(min_row=2, values_only=True, min_col=1):
+    try:
+        client_id_2 = row[0]
+        if clients[client_id_2]:
+            phone_num = str(row[3]) + str(row[4])
+            clients[client_id_2]['PhoneNumberWork'] = phone_num
+
+    except KeyError:
+        pass
+
 
 # Append our proper header to the new worksheet
 sheet.append(template_header)

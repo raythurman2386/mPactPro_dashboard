@@ -10,9 +10,9 @@ from utils import correct_date
 # case_sheet = file.active
 
 # This will be a new workbook that we save our corrected values to
-workbook = load_workbook(filename='gastonia.xlsx', data_only=True)
-new_wb = load_workbook(filename='gastonia_modified_cases.xlsx')
-sheet = workbook['Note']
+workbook = load_workbook(filename='AccessLiving.xlsx', data_only=True)
+new_wb = load_workbook(filename='AccessLiving_modified.xlsx')
+sheet = workbook['Notes']
 new_sheet = new_wb.create_sheet('Note')
 
 # Create a hashtable to keep track of cases
@@ -25,13 +25,13 @@ template_header = ['Client ID', 'First Name', 'Last Name', 'Duration', 'Date - s
 for row in sheet.iter_rows(min_row=2, values_only=True, min_col=1):
     # TODO: IF THE HEADER COLUMNS ARE IN DIFFERENT LOCATIONS, UPDATE THE VALUES FOR THE CLIENT!!!!!
     note = {
-        'client_id': row[0],
-        'first_name': row[1],
-        'last_name': row[2],
-        'duration': row[3],
-        'date_start': correct_date(row[4]),
-        'counselor_name': row[5],
-        'notes': row[6],
+        'client_id': row[1],
+        'first_name': None,
+        'last_name': None,
+        'duration': None,
+        'date_start': row[2],
+        'counselor_name': None,
+        'notes': row[3],
     }
     # Save the client by the ID for easy Access
     notes[note_id] = note
