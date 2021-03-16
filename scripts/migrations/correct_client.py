@@ -16,7 +16,7 @@ def fix_client_data(client, address=False):
             client[2] = options['ClientProgramEnrollment']['e']
 
         # Correct Gender if needed index 8
-        if client[8] == 'M':
+        if client[8] == 'Maile':
             client[8] = options['gender'][0]
         elif client[8] == 'Female' or client[8] == 'F':
             client[8] = options['gender'][1]
@@ -30,7 +30,7 @@ def fix_client_data(client, address=False):
         elif client[9] == 'Asian':
             client[9] = options['race']['b']
 
-        elif client[9] == 'c. c. Black or African American or African American' or client[9] == 'Black or African American':
+        elif client[9] == 'c. c. Black or African American or African American' or client[9] == 'Black/African American':
             client[9] = options['race']['c']
 
         elif client[9] == 'Native Hawaiian or Other Pacific Islander':
@@ -39,7 +39,7 @@ def fix_client_data(client, address=False):
         elif client[9] == 'White':
             client[9] = options['race']['e']
 
-        elif client[9] == 'American Indian Alaska Native and White':
+        elif client[9] == 'American Indian Alaska Native and White' or client[9] == 'American Indian/Alaskan Native':
             client[9] = options['race']['f']
 
         elif client[9] == 'Asian and White':
@@ -48,17 +48,17 @@ def fix_client_data(client, address=False):
         elif client[9] == 'Black or African American and White':
             client[9] = options['race']['h']
 
-        elif client[9] == 'Other multiple race' or client[9] == 'Cuban' or client[9] == 'Central America' or \
-            client[9] == 'Colombian' or client[9] == 'Puerto Rican' or client[9] == 'South American':
+        elif client[9] == 'Other multiple race' or client[9] == 'Other' or client[9] == 'Central America' or \
+            client[9] == 'Hispanic' or client[9] == 'Puerto Rican' or client[9] == 'South American':
             client[9] = options['race']['j']
 
         elif client[9] is None or client[9] == 'Chose not to respond':
             client[9] = options['race']['k']
 
         # Correct Ethnicity index 10
-        if client[10] == 'a.  Hispanic' or client[10] == 'Hispanic':
+        if client[10] == 'a.  Hispanic' or client[10] == 'Hispanic/Latino':
             client[10] = options['ethnicity']['a']
-        elif client[10] == 'b.  Not Hispanic' or client[10] == 'Not Hispanic':
+        elif client[10] == 'b.  Not Hispanic' or client[10] == 'Non Hispanic/Non Latino':
             client[10] = options['ethnicity']['b']
         elif client[10] is None:
             client[10] = options['ethnicity']['c']
@@ -98,8 +98,8 @@ def fix_client_data(client, address=False):
         elif client[27] == 'b. Household does not live in a rural area' or client[
             27] == 'Household does not live in a rural area' or client[27] == 'Does not live in rural area':
             client[27] = options['ruralStatus']['b']
-        # elif client[27] is None or client[27] == 'Chose not to respond':
-        #     client[27] = options['ruralStatus']['c']
+        elif client[27] is None or client[27] == 'Chose not to respond':
+            client[27] = options['ruralStatus']['c']
 
         # Correct English Proficiency index 28
         if client[28] == 'Is not English proficient' or client[28] == 'Household is Limited English Proficient':

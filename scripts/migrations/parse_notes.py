@@ -10,8 +10,8 @@ from utils import correct_date
 # case_sheet = file.active
 
 # This will be a new workbook that we save our corrected values to
-workbook = load_workbook(filename='SJHP.xlsx', data_only=True)
-new_wb = load_workbook(filename='SJHP_modified_cases.xlsx')
+workbook = load_workbook(filename='gastonia.xlsx', data_only=True)
+new_wb = load_workbook(filename='gastonia_modified_cases.xlsx')
 sheet = workbook['Note']
 new_sheet = new_wb.create_sheet('Note')
 
@@ -49,4 +49,4 @@ for note in notes:
     new_sheet.append(note_list)
 
 # Save the worksheet when all is complete
-new_wb.save(filename='SJHP_modified_notes.xlsx')
+new_wb.save(filename='gastonia_modified_notes.xlsx')

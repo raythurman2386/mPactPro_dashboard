@@ -47,12 +47,12 @@ template_header = ['ClientID', 'ClientCaseStatus', 'ClientProgramEnrollment', 'A
                    'PhoneNumberHome',
                    'ImmigrationStatus', 'EmailHome', 'EmailWork', 'MaritalStatus', 'Disability', 'HouseholdType',
                    'Education',
-                   'ReferralSource', 'LastContact', 'ActiveReportDateHUD', 'CompletedDate', 'InactiveDate', 'ItemID',
+                   'ReferralSource', 'LastContact', 'ActiveReportDateHUD', 'CompletedDate', 'InactiveDate', 'item_ID',
                    'Source']
 
 
 # Fill our clients hash table with every client
-for row in client_sheet.iter_rows(min_row=2, values_only=True, min_col=1):
+for row in client_sheet.iter_rows(min_row=4, values_only=True, min_col=2):
     client_id = row[0]
     # Uncomment if the name needs split to first and last
     # if row[3] is not None:
@@ -60,6 +60,85 @@ for row in client_sheet.iter_rows(min_row=2, values_only=True, min_col=1):
     # TODO: IF THE HEADER COLUMNS ARE IN DIFFERENT LOCATIONS, UPDATE THE VALUES FOR THE CLIENT!!!!!
     # This client matches our Template DO NOT CHANGE end up creating multiple
     # clients for each different cms we are importing.
+    # client = {
+    #   'clientId': client_id,
+    #   'ClientCaseStatus': row[1],
+    #   'ClientProgramEnrollment': row[2],
+    #   'ActiveStaff': row[3],
+    #   'ClientFirstName': row[4],
+    #   'ClientMiddleName': row[5],
+    #   'ClientLastName': row[6],
+    #   'DateOfBirth': correct_date(row[7]),
+    #   'Gender': row[8],
+    #   'Race': row[9],
+    #   'Ethnicity': row[10],
+    #   'VeteranStatus': row[11],
+    #   'ActiveMilitary': row[12],
+    #   'FirstTimeHomebuyer': row[13],
+    #   'HouseholdSize': row[14],
+    #   'CountyAmiIncomeLimit': row[15],
+    #   'HouseholdIncome': row[16],
+    #   'HouseholdIncomeBand': row[17],
+    #   'IntakeDate': correct_date(row[18]),
+    #   'StreetNumber': row[19],
+    #   'StreetName': row[20],
+    #   'ApartmentNumber': row[21],
+    #   'ClientCity': row[22],
+    #   'ClientCounty': None,
+    #   'ClientState': row[24],
+    #   'ClientZip': row[25],
+    #   'PrivacyOptOut': row[26],
+    #   'RuralAreaStatus': row[27],
+    #   'EnglishProficiencyLevel': row[28],
+    #   'BillToHud': row[29],
+    #   '8a': correct_date(row[30]),
+    #   '8b': correct_date(row[31]),
+    #   '8c': correct_date(row[32]),
+    #   '8d': correct_date(row[33]),
+    #   '8e': correct_date(row[34]),
+    #   '8f': correct_date(row[35]),
+    #   '8g': correct_date(row[36]),
+    #   '8h': correct_date(row[37]),
+    #   '8i': correct_date(row[38]),
+    #   '9a': correct_date(row[39]),
+    #   '9b': correct_date(row[40]),
+    #   '9c': correct_date(row[41]),
+    #   '9d': correct_date(row[42]),
+    #   '9e': correct_date(row[43]),
+    #   '9f': correct_date(row[44]),
+    #   '10a': correct_date(row[45]),
+    #   '10b': correct_date(row[46]),
+    #   '10c': correct_date(row[47]),
+    #   '10d': correct_date(row[48]),
+    #   '10e': correct_date(row[49]),
+    #   '10f': correct_date(row[50]),
+    #   '10g': correct_date(row[51]),
+    #   '10h': correct_date(row[52]),
+    #   '10i': correct_date(row[53]),
+    #   '10j': correct_date(row[54]),
+    #   '10k': correct_date(row[55]),
+    #   '10l': correct_date(row[56]),
+    #   '10m': correct_date(row[57]),
+    #   'PhoneNumberMobile': row[58],
+    #   'PhoneNumberWork': row[59],
+    #   'PhoneNumberHome': row[60],
+    #   'ImmigrationStatus': row[61],
+    #   'EmailHome': row[62],
+    #   'EmailWork': row[63],
+    #   'MaritalStatus': row[64],
+    #   'Disability': row[65],
+    #   'HouseholdType': row[66],
+    #   'Education': row[67],
+    #   'ReferralSource': row[68],
+    #   'LastContact': correct_date(row[69]),
+    #   'ActiveReportDateHUD': correct_date(row[70]),
+    #   'CompletedDate': correct_date(row[71]),
+    #   'InactiveDate': row[72],
+    #   'Item_id': count,
+    #   'Source': os.path.splitext(masterFile)[0]
+    # }
+
+    # Custom Client for Gastonia Data
     client = {
       'clientId': client_id,
       'ClientCaseStatus': row[1],
@@ -78,47 +157,47 @@ for row in client_sheet.iter_rows(min_row=2, values_only=True, min_col=1):
       'HouseholdSize': row[14],
       'CountyAmiIncomeLimit': row[15],
       'HouseholdIncome': row[16],
-      'HouseholdIncomeBand': row[17],
+      'HouseholdIncomeBand': None,
       'IntakeDate': correct_date(row[18]),
       'StreetNumber': row[19],
       'StreetName': row[20],
       'ApartmentNumber': row[21],
       'ClientCity': row[22],
-      'ClientCounty': None,
+      'ClientCounty': row[23],
       'ClientState': row[24],
       'ClientZip': row[25],
       'PrivacyOptOut': row[26],
       'RuralAreaStatus': row[27],
       'EnglishProficiencyLevel': row[28],
       'BillToHud': row[29],
-      '8a': correct_date(row[30]),
-      '8b': correct_date(row[31]),
-      '8c': correct_date(row[32]),
-      '8d': correct_date(row[33]),
-      '8e': correct_date(row[34]),
-      '8f': correct_date(row[35]),
-      '8g': correct_date(row[36]),
-      '8h': correct_date(row[37]),
-      '8i': correct_date(row[38]),
-      '9a': correct_date(row[39]),
-      '9b': correct_date(row[40]),
-      '9c': correct_date(row[41]),
-      '9d': correct_date(row[42]),
-      '9e': correct_date(row[43]),
-      '9f': correct_date(row[44]),
-      '10a': correct_date(row[45]),
-      '10b': correct_date(row[46]),
-      '10c': correct_date(row[47]),
-      '10d': correct_date(row[48]),
-      '10e': correct_date(row[49]),
-      '10f': correct_date(row[50]),
-      '10g': correct_date(row[51]),
-      '10h': correct_date(row[52]),
-      '10i': correct_date(row[53]),
-      '10j': correct_date(row[54]),
-      '10k': correct_date(row[55]),
-      '10l': correct_date(row[56]),
-      '10m': correct_date(row[57]),
+      '8a': None,
+      '8b': None,
+      '8c': None,
+      '8d': None,
+      '8e': None,
+      '8f': None,
+      '8g': None,
+      '8h': None,
+      '8i': None,
+      '9a': None,
+      '9b': None,
+      '9c': None,
+      '9d': None,
+      '9e': None,
+      '9f': None,
+      '10a': None,
+      '10b': None,
+      '10c': None,
+      '10d': None,
+      '10e': None,
+      '10f': None,
+      '10g': None,
+      '10h': None,
+      '10i': None,
+      '10j': None,
+      '10k': None,
+      '10l': None,
+      '10m': None,
       'PhoneNumberMobile': row[58],
       'PhoneNumberWork': row[59],
       'PhoneNumberHome': row[60],
@@ -131,13 +210,15 @@ for row in client_sheet.iter_rows(min_row=2, values_only=True, min_col=1):
       'Education': row[67],
       'ReferralSource': row[68],
       'LastContact': correct_date(row[69]),
-      'ActiveReportDateHUD': correct_date(row[70]),
+      'ActiveReportDateHUD': None,
       'CompletedDate': correct_date(row[71]),
       'InactiveDate': row[72],
       'Item_id': count,
-      'Source': os.path.splitext(masterFile)[0]
+      'Source': 'City of Gastonia'
     }
+
     # Save the client by the ID for easy Access
+
     clients[client_id] = client
     count += 1
 
@@ -152,9 +233,9 @@ for client in clients:
     # TODO: Fix client data to match our requirements
     # If the address needs split, pass True along with the client list
     # If correcting address use this variable instead
-    # corrected_client = fix_client_data(client_list, True)
+    corrected_client = fix_client_data(client_list, True)
     # If the address does not need split this is the one to use
-    corrected_client = fix_client_data(client_list)
+    # corrected_client = fix_client_data(client_list)
 
     # Add corrected client to the worksheet
     sheet.append(corrected_client)

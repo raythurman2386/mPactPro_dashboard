@@ -10,8 +10,8 @@ from utils import correct_date
 # case_sheet = file.active
 
 # This will be a new workbook that we save our corrected values to
-workbook = load_workbook(filename='SJHP.xlsx', data_only=True)
-new_wb = load_workbook(filename='SJHP_modified.xlsx')
+workbook = load_workbook(filename='gastonia.xlsx', data_only=True)
+new_wb = load_workbook(filename='gastonia_modified.xlsx')
 sheet = workbook['Case']
 new_sheet = new_wb.create_sheet('Case')
 
@@ -37,54 +37,54 @@ new_sheet.append(template_header)
 new_sheet.title = 'Case'
 
 # Fill our clients hash table with every client
-for row in sheet.iter_rows(min_row=2, values_only=True, min_col=2):
+for row in sheet.iter_rows(min_row=4, values_only=True, min_col=2):
     # TODO: IF THE HEADER COLUMNS ARE IN DIFFERENT LOCATIONS, UPDATE THE VALUES FOR THE CLIENT!!!!!
     case = {
         'case_type': row[0],
         'client_id': row[1],
         'assigned_counselor': row[2],
         'assigned_coach': row[3],
-        'assigned_loan_officer': None,
-        'home_purchase_client_type': None,
-        'home_purchase_client_facilitation': None,
+        'assigned_loan_officer': row[4],
+        'home_purchase_client_type': row[5],
+        'home_purchase_client_facilitation': row[6],
         'client_case_status': row[7],
         'client_disclosure_form_present': None,
         'client_first_name': row[9],
-        'client_middle_name': None,
+        'client_middle_name': row[10],
         'client_last_name': row[11],
         'date_of_birth': correct_date(row[12]),
-        'credit_score_before': None,
-        'credit_score_after': None,
+        'credit_score_before': row[13],
+        'credit_score_after': row[14],
         'intake_date': correct_date(row[15]),
-        'subsidized_housing_assistance': None,
-        'primary_employer': None,
-        'employer_address': None,
-        'secondary_employer': None,
-        'secondary_employer_address': None,
-        'home_owner_last_three_years': None,
-        'real_estate_agent': None,
-        'last_contact_date': None,
-        'long_term_client_date': None,
-        'short_term_client_date': None,
-        'near_mortgage_ready_date': None,
-        'mortgage_ready_date': None,
-        'in_financing_date': None,
-        'active_report_date_hud': None,
-        'completed_date': None,
-        'denied_date': None,
-        'inactive_date': None,
-        'privacy_opt_out': None,
-        'rental_resolution': None,
-        'lm_package_status': None,
-        'mm_subject_property_present': None,
-        'mm_lien_info_present': None,
-        'level_one_date': None,
-        'level_two_date': None,
-        'seeking_shelter_resolution': None,
-        'years_at_current_address': None,
-        'senior_as_hoh': None,
-        'home_owner_resolutions': None,
-        'home_purchase_resolution': None
+        'subsidized_housing_assistance': row[16],
+        'primary_employer': row[17],
+        'employer_address': row[18],
+        'secondary_employer': row[19],
+        'secondary_employer_address': row[20],
+        'home_owner_last_three_years': row[21],
+        'real_estate_agent': row[22],
+        'last_contact_date': correct_date(row[23]),
+        'long_term_client_date': row[24],
+        'short_term_client_date': row[25],
+        'near_mortgage_ready_date': row[26],
+        'mortgage_ready_date': row[27],
+        'in_financing_date': row[28],
+        'active_report_date_hud': row[29],
+        'completed_date': row[30],
+        'denied_date': row[31],
+        'inactive_date': row[32],
+        'privacy_opt_out': row[33],
+        'rental_resolution': row[34],
+        'lm_package_status': row[35],
+        'mm_subject_property_present': row[36],
+        'mm_lien_info_present': row[37],
+        'level_one_date': row[38],
+        'level_two_date': row[39],
+        'seeking_shelter_resolution': row[40],
+        'years_at_current_address': row[41],
+        'senior_as_hoh': row[42],
+        'home_owner_resolutions': row[43],
+        'home_purchase_resolution': row[44]
     }
     # Save the client by the ID for easy Access
     cases[case_id] = case
@@ -101,4 +101,4 @@ for case in cases:
     new_sheet.append(case_list)
 
 # Save the worksheet when all is complete
-new_wb.save(filename='SJHP_modified_cases.xlsx')
+new_wb.save(filename='gastonia_modified_cases.xlsx')
