@@ -10,9 +10,10 @@ from utils import correct_date
 # case_sheet = file.active
 
 # This will be a new workbook that we save our corrected values to
-workbook = load_workbook(filename='AccessLiving.xlsx', data_only=True)
+workbook = load_workbook(filename='client notes.xlsx', data_only=True)
 new_wb = load_workbook(filename='AccessLiving_modified.xlsx')
-sheet = workbook['Notes']
+sheet = workbook.active
+client_sheet = new_wb['Clients']
 new_sheet = new_wb.create_sheet('Note')
 
 # Create a hashtable to keep track of cases
@@ -21,15 +22,28 @@ note_id = 1
 
 template_header = ['Client ID', 'First Name', 'Last Name', 'Duration', 'Date - start', 'Counselor - name', 'Notes']
 
+
+# Grab the names of the clients from the main sheet in the template
+clients = {}
+for row in client_sheet.iter_rows(min_row=1, min_col=1, values_only=True):
+    client_id = row[0]
+    client = {
+        'client_id': client_id,
+        'first': row[4],
+        'last': row[6]
+    }
+    clients[client_id] = client
+
 # Fill our clients hash table with every client
 for row in sheet.iter_rows(min_row=2, values_only=True, min_col=1):
     # TODO: IF THE HEADER COLUMNS ARE IN DIFFERENT LOCATIONS, UPDATE THE VALUES FOR THE CLIENT!!!!!
+    client_id = row[1]
     note = {
         'client_id': row[1],
-        'first_name': None,
-        'last_name': None,
+        'first_name': clients[client_id]['first'],
+        'last_name': clients[client_id]['last'],
         'duration': None,
-        'date_start': row[2],
+        'date_start': correct_date(row[2]),
         'counselor_name': None,
         'notes': row[3],
     }
@@ -49,4 +63,4 @@ for note in notes:
     new_sheet.append(note_list)
 
 # Save the worksheet when all is complete
-new_wb.save(filename='gastonia_modified_notes.xlsx')
+new_wb.save(filename='AccessLiving_modified_notes.xlsx')

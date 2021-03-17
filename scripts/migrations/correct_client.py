@@ -16,51 +16,55 @@ def fix_client_data(client, address=False):
             client[2] = options['ClientProgramEnrollment']['e']
 
         # Correct Gender if needed index 8
-        if client[8] == 'Maile':
+        if client[8] == 'M':
             client[8] = options['gender'][0]
         elif client[8] == 'Female' or client[8] == 'F':
             client[8] = options['gender'][1]
-        elif client[8] == 'O':
+        elif client[8] == 'NULL':
             client[8] = None
 
         # Correct Race index 9
-        if client[9] == 'American Indian Alaskan Native':
+        if client[9] == 'American Indian Alaskan Native' or client[9] == 908:
             client[9] = options['race']['a']
 
-        elif client[9] == 'Asian':
+        elif client[9] == 'Asian' or client[9] == 901:
             client[9] = options['race']['b']
 
-        elif client[9] == 'c. c. Black or African American or African American' or client[9] == 'Black/African American':
+        elif client[9] == '895' or client[9] == 'Black/African American' or client[9] == 895:
             client[9] = options['race']['c']
 
-        elif client[9] == 'Native Hawaiian or Other Pacific Islander':
+        elif client[9] == 'Native Hawaiian or Other Pacific Islander' or client[9] == 897:
             client[9] = options['race']['d']
 
-        elif client[9] == 'White':
+        elif client[9] == 'White' or client[9] == 902:
             client[9] = options['race']['e']
 
-        elif client[9] == 'American Indian Alaska Native and White' or client[9] == 'American Indian/Alaskan Native':
+        elif client[9] == 'American Indian Alaska Native and White' or client[9] == 'American Indian/Alaskan Native' or client[9] == 898:
             client[9] = options['race']['f']
 
-        elif client[9] == 'Asian and White':
+        elif client[9] == 'Asian and White' or client[9] == 899:
             client[9] = options['race']['g']
 
-        elif client[9] == 'Black or African American and White':
+        elif client[9] == 'Black or African American and White' or client[9] == 900:
             client[9] = options['race']['h']
 
         elif client[9] == 'Other multiple race' or client[9] == 'Other' or client[9] == 'Central America' or \
-            client[9] == 'Hispanic' or client[9] == 'Puerto Rican' or client[9] == 'South American':
+            client[9] == 'Hispanic' or client[9] == 'Puerto Rican' or client[9] == 904 or client[9] == 907:
             client[9] = options['race']['j']
 
-        elif client[9] is None or client[9] == 'Chose not to respond':
+        elif client[9] is None or client[9] == 'Chose not to respond' or client[9] == 896:
             client[9] = options['race']['k']
+
+        elif client[9] == 903:
+            client[9] == options['race']['k']
+            client[10] == options['ethnicity']['a']
 
         # Correct Ethnicity index 10
         if client[10] == 'a.  Hispanic' or client[10] == 'Hispanic/Latino':
             client[10] = options['ethnicity']['a']
-        elif client[10] == 'b.  Not Hispanic' or client[10] == 'Non Hispanic/Non Latino':
+        elif client[10] == 'b.  Not Hispanic' or client[10] == 'Non Hispanic/Non Latino' or client[10] is None:
             client[10] = options['ethnicity']['b']
-        elif client[10] is None:
+        elif client[10] == 'NULL':
             client[10] = options['ethnicity']['c']
 
         # Correct Income Band index 17
@@ -80,7 +84,9 @@ def fix_client_data(client, address=False):
         # TODO: IF THE ADDRESS DOES NOT NEED CORRECTED COMMENT THIS OUT
         # Correct Street if needed
         if address:
-            po_variations = ['PO', 'P.O.']
+            po_variations = ['PO', 'P.O.', 'P', 'HOMELESS', 'Alden', 'COMFORT', 'POBOX', 'NO', 'Homeless', 'Chicago',
+                             'ss', 'NAOMI', 'Thresholds', 'NULL', 'Courtyard', 'YMCA', 'NA', 'CORNERSTONE', 'no',
+                             'POBox', 'HOMLESS', 'SALVATION', 'POBOX368463']
             directions = ['N', 'S', 'E', 'W', 'NW', 'NE', 'SW', 'SE']
             if client[20] is not None:
                 street_arr = client[20].split()
@@ -126,15 +132,17 @@ def fix_client_data(client, address=False):
                 client[60] = int(phone_num2)
 
         # Correct Marital Status index 64
-        if client[64] == 'Single':
+        if client[64] == 'Single' or client[64] == 647:
             client[64] = options['maritalStatus']['a']
-        elif client[64] == 'Married':
+        elif client[64] == 'Married' or client[64] == 643:
             client[64] = options['maritalStatus']['b']
-        elif client[64] == 'Divorced':
+        elif client[64] == 'Divorced' or client[64] == 642:
             client[64] = options['maritalStatus']['c']
-        elif client[64] == 'Widowed':
+        elif client[64] == 646:
+            client[64] = options['maritalStatus']['d']
+        elif client[64] == 'Widowed' or client[64] == 648:
             client[64] = options['maritalStatus']['e']
-        elif client[64] is None:
+        elif client[64] is None or client[64] == 'NULL' or client[64] == 0 or client[64] == 644:
             client[64] = None
 
         # Correct Household Type index 66

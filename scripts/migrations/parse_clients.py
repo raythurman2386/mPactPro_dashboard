@@ -52,7 +52,7 @@ template_header = ['ClientID', 'ClientCaseStatus', 'ClientProgramEnrollment', 'A
 
 
 # Fill our clients hash table with every client
-for row in client_sheet.iter_rows(min_row=4, values_only=True, min_col=2):
+for row in client_sheet.iter_rows(min_row=2, values_only=True, min_col=1):
     client_id = row[0]
     # Uncomment if the name needs split to first and last
     # if row[3] is not None:
@@ -84,7 +84,7 @@ for row in client_sheet.iter_rows(min_row=4, values_only=True, min_col=2):
       'StreetName': row[20],
       'ApartmentNumber': row[21],
       'ClientCity': row[22],
-      'ClientCounty': None,
+      'ClientCounty': row[23],
       'ClientState': row[24],
       'ClientZip': row[25],
       'PrivacyOptOut': row[26],
@@ -153,9 +153,9 @@ for client in clients:
     # TODO: Fix client data to match our requirements
     # If the address needs split, pass True along with the client list
     # If correcting address use this variable instead
-    # corrected_client = fix_client_data(client_list, True)
+    corrected_client = fix_client_data(client_list, True)
     # If the address does not need split this is the one to use
-    corrected_client = fix_client_data(client_list)
+    # corrected_client = fix_client_data(client_list)
 
     # Add corrected client to the worksheet
     sheet.append(corrected_client)
