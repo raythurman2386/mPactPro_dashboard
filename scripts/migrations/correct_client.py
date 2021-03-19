@@ -90,10 +90,12 @@ def fix_client_data(client, address=False):
             directions = ['N', 'S', 'E', 'W', 'NW', 'NE', 'SW', 'SE']
             if client[20] is not None:
                 street_arr = client[20].split()
+                print(street_arr)
+                print(len(street_arr))
                 if street_arr[0] not in po_variations:
-                    street_num = street_arr[0]
-                    new_address = ' '.join(street_arr[1:])
-                    client[19] = street_num
+                    # street_num = street_arr[0]
+                    new_address = ' '.join(street_arr[:3])
+                    # client[19] = street_num
                     client[20] = new_address
                 else:
                     client[20] = ' '.join(street_arr)

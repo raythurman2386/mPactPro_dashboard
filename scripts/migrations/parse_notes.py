@@ -10,9 +10,9 @@ from utils import correct_date
 # case_sheet = file.active
 
 # This will be a new workbook that we save our corrected values to
-workbook = load_workbook(filename='client notes.xlsx', data_only=True)
-new_wb = load_workbook(filename='AccessLiving_modified.xlsx')
-sheet = workbook.active
+workbook = load_workbook(filename='AccessLiving_final.xlsx', data_only=True)
+new_wb = load_workbook(filename='AccessLiving_final_modified.xlsx')
+sheet = workbook['Note']
 client_sheet = new_wb['Clients']
 new_sheet = new_wb.create_sheet('Note')
 
@@ -20,32 +20,32 @@ new_sheet = new_wb.create_sheet('Note')
 notes = {}
 note_id = 1
 
-template_header = ['Client ID', 'First Name', 'Last Name', 'Duration', 'Date - start', 'Counselor - name', 'Notes']
+template_header = ['ClientID', 'ClientFirstName', 'ClientLastName', 'Duration', 'NoteDate', 'Counselor', 'NoteText']
 
 
 # Grab the names of the clients from the main sheet in the template
-clients = {}
-for row in client_sheet.iter_rows(min_row=1, min_col=1, values_only=True):
-    client_id = row[0]
-    client = {
-        'client_id': client_id,
-        'first': row[4],
-        'last': row[6]
-    }
-    clients[client_id] = client
+# clients = {}
+# for row in client_sheet.iter_rows(min_row=1, min_col=1, values_only=True):
+#     client_id = row[0]
+#     client = {
+#         'client_id': client_id,
+#         'first': row[4],
+#         'last': row[6]
+#     }
+#     clients[client_id] = client
 
 # Fill our clients hash table with every client
 for row in sheet.iter_rows(min_row=2, values_only=True, min_col=1):
     # TODO: IF THE HEADER COLUMNS ARE IN DIFFERENT LOCATIONS, UPDATE THE VALUES FOR THE CLIENT!!!!!
-    client_id = row[1]
+    client_id = row[0]
     note = {
-        'client_id': row[1],
-        'first_name': clients[client_id]['first'],
-        'last_name': clients[client_id]['last'],
+        'client_id': client_id,
+        'first_name': row[1],
+        'last_name': row[2],
         'duration': None,
-        'date_start': correct_date(row[2]),
+        'date_start': row[4],
         'counselor_name': None,
-        'notes': row[3],
+        'notes': row[6],
     }
     # Save the client by the ID for easy Access
     notes[note_id] = note
