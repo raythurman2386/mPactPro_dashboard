@@ -10,8 +10,8 @@ from utils import correct_date
 # case_sheet = file.active
 
 # This will be a new workbook that we save our corrected values to
-workbook = load_workbook(filename='gastonia.xlsx', data_only=True)
-new_wb = load_workbook(filename='gastonia_modified.xlsx')
+workbook = load_workbook(filename='rcap.xlsx', data_only=True)
+new_wb = load_workbook(filename='rcap_modified.xlsx')
 sheet = workbook['Case']
 new_sheet = new_wb.create_sheet('Case')
 
@@ -37,7 +37,7 @@ new_sheet.append(template_header)
 new_sheet.title = 'Case'
 
 # Fill our clients hash table with every client
-for row in sheet.iter_rows(min_row=4, values_only=True, min_col=2):
+for row in sheet.iter_rows(min_row=2, values_only=True, min_col=1):
     # TODO: IF THE HEADER COLUMNS ARE IN DIFFERENT LOCATIONS, UPDATE THE VALUES FOR THE CLIENT!!!!!
     case = {
         'case_type': row[0],
@@ -101,4 +101,4 @@ for case in cases:
     new_sheet.append(case_list)
 
 # Save the worksheet when all is complete
-new_wb.save(filename='gastonia_modified_cases.xlsx')
+new_wb.save(filename='rcap_modified_cases.xlsx')
