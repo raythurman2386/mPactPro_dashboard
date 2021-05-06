@@ -1,4 +1,5 @@
 import datetime
+from openpyxl import load_workbook, Workbook
 
 
 def correct_date(date):
@@ -7,6 +8,61 @@ def correct_date(date):
             return date.strftime('%m/%d/%Y')
     except AttributeError:
         return date
+
+
+def create_workbook():
+    # *****************************************************************************************
+    # Open new workbook, create tabs, and write headers
+    # Full template workbook setup and initialization
+    workbook = Workbook()
+    template_client_sheet = workbook.create_sheet('Clients')
+    template_case_sheet = workbook.create_sheet('Case')
+    template_session_sheet = workbook.create_sheet('Session')
+    template_note_sheet = workbook.create_sheet('Note')
+
+    # Headers for all tabs of the workbook
+    client_header = ['ClientID', 'ClientCaseStatus', 'ClientProgramEnrollment', 'ActiveStaff', 'ClientFirstName',
+                     'ClientMiddleName',
+                     'ClientLastName', 'DateOfBirth', 'Gender', 'Race', 'Ethnicity', 'VeteranStatus', 'ActiveMilitary',
+                     'FirstTimeHomebuyer', 'HouseholdSize', 'CountyAmiIncomeLimit', 'HouseholdIncome',
+                     'HouseholdIncomeBand',
+                     'IntakeDate', 'StreetNumber', 'StreetName', 'ApartmentNumber', 'ClientCity', 'ClientCounty',
+                     'ClientState',
+                     'ClientZip', 'PrivacyOptOut', 'RuralAreaStatus', 'EnglishProficiencyLevel', 'BillToHud', '8a',
+                     '8b',
+                     '8c', '8d',
+                     '8e', '8f', '8g', '8h', '8i', '9a', '9b', '9c', '9d', '9e', '9f', '10a', '10b', '10c', '10d',
+                     '10e',
+                     '10f',
+                     '10g', '10h', '10i', '10j', '10k', '10l', '10m', 'PhoneNumberMobile', 'PhoneNumberWork',
+                     'PhoneNumberHome',
+                     'ImmigrationStatus', 'EmailHome', 'EmailWork', 'MaritalStatus', 'Disability', 'HouseholdType',
+                     'Education',
+                     'ReferralSource', 'LastContact', 'ActiveReportDateHUD', 'CompletedDate', 'InactiveDate']
+    case_header = ['CaseType', 'ClientID', 'AssignedCounselor', 'AssignedCoach', 'AssignedLoanOfficer',
+                   'HomePurchaseClientType', 'HomePurchaseClientFacilitation', 'ClientCaseStatus',
+                   'ClientDisclosureFormPresent', 'ClientFirstName', 'ClientMiddleName', 'ClientLastName',
+                   'DateofBirth', 'CreditScoreBefore', 'CreditScoreAfter', 'IntakeDate', 'SubsidizedHousingAssistance',
+                   'PrimaryEmployer', 'EmployerAddress', 'SecondaryEmployer', 'SecondaryEmployerAddress',
+                   'HomeOwnerLastThreeYears', 'RealEstateAgent', 'LastContactDate', 'LongTermClientDate',
+                   'ShortTermClientDate', 'NearMortgageReadyDate', 'MortgageReadyDate', 'InFinancingDate',
+                   'ActiveReportDateHUD', 'CompletedDate', 'DeniedDate', 'InactiveDate', 'PrivacyOptOut',
+                   'RentalResolution', 'LMPackageStatus', 'MMSubjectPropertyPresent', 'MMLienInfoPresent'
+                                                                                      'LevelOneDate', 'LevelTwoDate',
+                   'SeekingShelterResolution', 'YearsAtCurrentAddress'
+                                               'SeniorAsHoH', 'HomeOwnerResolutions', 'HomePurchaseResolution']
+    session_header = ['SessionDuration', 'CounselorName', 'SessionType', 'ClientNotes', '9series', '10a', '10b', '10c',
+                      '10d', '10e', '10f', '10g', '10h', '10i', '10j', '10k', '10l', '10m', 'SessionFee', 'BillableTo',
+                      'IfOtherWho']
+    note_header = ['ClientID', 'ClientFirstName', 'ClientLastName', 'Duration', 'NoteDate', 'Counselor', 'NoteText']
+
+    # Append our proper header to the new worksheet
+    template_client_sheet.append(client_header)
+    template_case_sheet.append(case_header)
+    template_session_sheet.append(session_header)
+    template_note_sheet.append(note_header)
+    # *****************************************************************************************
+    return workbook
 
 
 options = {
