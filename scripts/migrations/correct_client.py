@@ -4,12 +4,6 @@ from utils import options
 def fix_client_data(client, address=False):
     try:
         # Correct client case status index 1
-        # if client[1] == 'In-Process':
-        #     client[1] = options['ClientCaseStatus']['b']
-        # elif client[1] == 'Fulfilled':
-        #     client[1] = options['ClientCaseStatus']['c']
-        # elif client[1] == 'Suspended' or client[1] == 'Ineligible':
-        #     client[1] = options['ClientCaseStatus']['e']
         if client[1] == 'Dropped Out':
             client[1] = options['ClientCaseStatus']['d']
         elif client[1] == 'Ongoing':
