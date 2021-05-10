@@ -30,7 +30,7 @@ def fix_client_data(client, address=False):
         elif client[9] == 'Asian' or client[9] == 901:
             client[9] = options['race']['b']
 
-        elif client[9] == '895' or client[9] == 'Black/African American' or client[9] == 895:
+        elif client[9] == 'Black or African American' or client[9] == 'Black/African American' or client[9] == 895:
             client[9] = options['race']['c']
 
         elif client[9] == 'Native Hawaiian or Other Pacific Islander' or client[9] == 897:
@@ -49,7 +49,7 @@ def fix_client_data(client, address=False):
             client[9] = options['race']['h']
 
         elif client[9] == 'Other multiple race' or client[9] == 'Other' or client[9] == 'Central America' or \
-            client[9] == 'Hispanic' or client[9] == 'Puerto Rican' or client[9] == 904 or client[9] == 907:
+                client[9] == 'Hispanic' or client[9] == 'Puerto Rican' or client[9] == 904 or client[9] == 907:
             client[9] = options['race']['j']
 
         elif client[9] is None or client[9] == 'Chose not to respond' or client[9] == 896:
@@ -68,7 +68,7 @@ def fix_client_data(client, address=False):
             client[10] = options['ethnicity']['c']
 
         # Correct Income Band index 17
-        if client[17] == '<30%' or client[17] == '< 30% of AMI':
+        if client[17] == '< 30% of Area Median Income (AMI)' or client[17] == '< 30% of AMI':
             client[17] = options['incomeBand']['a']
         elif client[17] == '30-49%' or client[17] == '30 - 49% of AMI':
             client[17] = options['incomeBand']['b']
@@ -76,7 +76,7 @@ def fix_client_data(client, address=False):
             client[17] = options['incomeBand']['c']
         elif client[17] == '80-100%' or client[17] == '80 - 100% of AMI':
             client[17] = options['incomeBand']['d']
-        elif client[17] == '100%-120%' or client[17] == '>120%' or client[17] == '> 100% AMI' or client[17] == '120 - 130%' or client[17] == '130 - 140%' or client[17] == '140 - 150%' or client[17] == 'Over 150%':
+        elif client[17] == '100%-120%' or client[17] == '>100% AMI' or client[17] == '> 100% AMI' or client[17] == '120 - 130%' or client[17] == '130 - 140%' or client[17] == '140 - 150%' or client[17] == 'Over 150%':
             client[17] = options['incomeBand']['e']
         elif client[17] == '' or client[17] == 'Chose not to respond':
             client[17] = options['incomeBand']['f']
@@ -86,16 +86,16 @@ def fix_client_data(client, address=False):
         if address:
             po_variations = ['PO', 'P.O.', 'P', 'HOMELESS', 'Alden', 'COMFORT', 'POBOX', 'NO', 'Homeless', 'Chicago',
                              'ss', 'NAOMI', 'Thresholds', 'NULL', 'Courtyard', 'YMCA', 'NA', 'CORNERSTONE', 'no',
-                             'POBox', 'HOMLESS', 'SALVATION', 'POBOX368463']
+                             'POBox', 'HOMLESS', 'SALVATION', 'POBOX368463', 'Homeless-']
             directions = ['N', 'S', 'E', 'W', 'NW', 'NE', 'SW', 'SE']
             if client[20] is not None:
                 street_arr = client[20].split()
-                print(street_arr)
-                print(len(street_arr))
+                # print(street_arr)
+                # print(len(street_arr))
                 if street_arr[0] not in po_variations:
-                    # street_num = street_arr[0]
+                    street_num = street_arr[0]
                     new_address = ' '.join(street_arr[:3])
-                    # client[19] = street_num
+                    client[19] = street_num
                     client[20] = new_address
                 else:
                     client[20] = ' '.join(street_arr)
@@ -104,7 +104,7 @@ def fix_client_data(client, address=False):
         if client[27] == 'a. Household lives in a rural area' or client[27] == 'Household lives in a rural area' or client[27] == 'Lives in rural area':
             client[27] = options['ruralStatus']['a']
         elif client[27] == 'b. Household does not live in a rural area' or client[
-            27] == 'Household does not live in a rural area' or client[27] == 'Does not live in rural area':
+                27] == 'Household does not live in a rural area' or client[27] == 'Does not live in rural area':
             client[27] = options['ruralStatus']['b']
         elif client[27] is None or client[27] == 'Chose not to respond':
             client[27] = options['ruralStatus']['c']
@@ -113,7 +113,7 @@ def fix_client_data(client, address=False):
         if client[28] == 'Is not English proficient' or client[28] == 'Household is Limited English Proficient':
             client[28] = options['englishProficiency']['a']
         elif client[28] == 'b . Household is not Limited English Proficient' or client[
-            28] == 'Household is not Limited English Proficient':
+                28] == 'Household is not Limited English Proficient':
             client[28] = options['englishProficiency']['b']
         elif client[28] is None or client[28] == 'Chose not to respond':
             client[28] = options['englishProficiency']['c']

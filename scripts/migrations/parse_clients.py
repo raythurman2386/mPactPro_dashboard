@@ -1,6 +1,6 @@
 from openpyxl import load_workbook, Workbook
 from correct_client import fix_client_data
-from utils import correct_date
+from utils import correct_date, create_workbook
 import sys
 import os
 
@@ -11,140 +11,105 @@ masterFile = sys.argv[1]
 # data_only flag will only bring in the data and no excel functions
 file = load_workbook(filename=masterFile, data_only=True)
 
-# File to act as simple dp to keep track of count var
-# count var will be used for the itemID col
-try:
-    count_file = open("count.txt", "r")
-    count = int(count_file.readlines()[-1])
-    count_file.close()
-except ValueError:
-    count = 1
-except IndexError:
-    count = 1
-
-
-client_sheet = file.active
+client_sheet = file["Clients"]
+case_sheet = file["Cases"]
+session_sheet = file["Session"]
 
 # This will be a new workbook that we save our corrected values to
-workbook = Workbook()
-sheet = workbook.active
+workbook = create_workbook()
+temp_client_sheet = workbook["Clients"]
+temp_case_sheet = workbook["Case"]
+temp_session_sheet = workbook["Session"]
 
 # Create a hashtable to keep track of clients
 clients = {}
-
-template_header = ['ClientID', 'ClientCaseStatus', 'ClientProgramEnrollment', 'ActiveStaff', 'ClientFirstName',
-                   'ClientMiddleName',
-                   'ClientLastName', 'DateOfBirth', 'Gender', 'Race', 'Ethnicity', 'VeteranStatus', 'ActiveMilitary',
-                   'FirstTimeHomebuyer', 'HouseholdSize', 'CountyAmiIncomeLimit', 'HouseholdIncome',
-                   'HouseholdIncomeBand',
-                   'IntakeDate', 'StreetNumber', 'StreetName', 'ApartmentNumber', 'ClientCity', 'ClientCounty',
-                   'ClientState',
-                   'ClientZip', 'PrivacyOptOut', 'RuralAreaStatus', 'EnglishProficiencyLevel', 'BillToHud', '8a', '8b',
-                   '8c', '8d',
-                   '8e', '8f', '8g', '8h', '8i', '9a', '9b', '9c', '9d', '9e', '9f', '10a', '10b', '10c', '10d', '10e',
-                   '10f',
-                   '10g', '10h', '10i', '10j', '10k', '10l', '10m', 'PhoneNumberMobile', 'PhoneNumberWork',
-                   'PhoneNumberHome',
-                   'ImmigrationStatus', 'EmailHome', 'EmailWork', 'MaritalStatus', 'Disability', 'HouseholdType',
-                   'Education',
-                   'ReferralSource', 'LastContact', 'ActiveReportDateHUD', 'CompletedDate', 'InactiveDate', 'item_ID',
-                   'Source']
-
+cases = {}
+sessions = {}
 
 # Fill our clients hash table with every client
 for row in client_sheet.iter_rows(min_row=2, values_only=True, min_col=1):
-    client_id = row[0]
-    # Uncomment if the name needs split to first and last
-    # if row[3] is not None:
-    #     split_name = row[3].split(' ')
+    client_id = row[1]
     # TODO: IF THE HEADER COLUMNS ARE IN DIFFERENT LOCATIONS, UPDATE THE VALUES FOR THE CLIENT!!!!!
     # This client matches our Template DO NOT CHANGE end up creating multiple
     # clients for each different cms we are importing.
     client = {
         'clientId': client_id,
-        'ClientCaseStatus': row[1],
-        'ClientProgramEnrollment': row[2],
-        'ActiveStaff': row[3],
-        'ClientFirstName': row[4],
-        'ClientMiddleName': row[5],
-        'ClientLastName': row[6],
-        'DateOfBirth': correct_date(row[7]),
-        'Gender': row[8],
+        'ClientCaseStatus': row[40],
+        'ClientProgramEnrollment': row[32],
+        'ActiveStaff': row[26],
+        'ClientFirstName': row[0],
+        'ClientMiddleName': None,
+        'ClientLastName': None,
+        'DateOfBirth': None,
+        'Gender': row[7],
         'Race': row[9],
-        'Ethnicity': row[10],
-        'VeteranStatus': row[11],
-        'ActiveMilitary': row[12],
-        'FirstTimeHomebuyer': row[13],
-        'HouseholdSize': row[14],
-        'CountyAmiIncomeLimit': row[15],
-        'HouseholdIncome': row[16],
-        'HouseholdIncomeBand': row[17],
-        'IntakeDate': correct_date(row[18]),
-        'StreetNumber': row[19],
-        'StreetName': row[20],
-        'ApartmentNumber': row[21],
-        'ClientCity': row[22],
-        'ClientCounty': row[23],
-        'ClientState': row[24],
-        'ClientZip': row[25],
-        'PrivacyOptOut': row[26],
-        'RuralAreaStatus': row[27],
-        'EnglishProficiencyLevel': row[28],
-        'BillToHud': row[29],
-        '8a': correct_date(row[30]),
-        '8b': correct_date(row[31]),
-        '8c': correct_date(row[32]),
-        '8d': correct_date(row[33]),
-        '8e': correct_date(row[34]),
-        '8f': correct_date(row[35]),
-        '8g': correct_date(row[36]),
-        '8h': correct_date(row[37]),
-        '8i': correct_date(row[38]),
-        '9a': correct_date(row[39]),
-        '9b': correct_date(row[40]),
-        '9c': correct_date(row[41]),
-        '9d': correct_date(row[42]),
-        '9e': correct_date(row[43]),
-        '9f': correct_date(row[44]),
-        '10a': correct_date(row[45]),
-        '10b': correct_date(row[46]),
-        '10c': correct_date(row[47]),
-        '10d': correct_date(row[48]),
-        '10e': correct_date(row[49]),
-        '10f': correct_date(row[50]),
-        '10g': correct_date(row[51]),
-        '10h': correct_date(row[52]),
-        '10i': correct_date(row[53]),
-        '10j': correct_date(row[54]),
-        '10k': correct_date(row[55]),
-        '10l': correct_date(row[56]),
-        '10m': correct_date(row[57]),
-        'PhoneNumberMobile': row[58],
-        'PhoneNumberWork': row[59],
-        'PhoneNumberHome': row[60],
-        'ImmigrationStatus': row[61],
-        'EmailHome': row[62],
-        'EmailWork': row[63],
-        'MaritalStatus': row[64],
-        'Disability': row[65],
-        'HouseholdType': row[66],
-        'Education': row[67],
-        'ReferralSource': row[68],
-        'LastContact': correct_date(row[69]),
-        'ActiveReportDateHUD': correct_date(row[70]),
-        'CompletedDate': correct_date(row[71]),
-        'InactiveDate': row[72],
-        'Item_id': count,
-        'Source': os.path.splitext(masterFile)[0]
+        'Ethnicity': row[11],
+        'VeteranStatus': None,
+        'ActiveMilitary': None,
+        'FirstTimeHomebuyer': None,
+        'HouseholdSize': row[23],
+        'CountyAmiIncomeLimit': None,
+        'HouseholdIncome': row[17],
+        'HouseholdIncomeBand': row[14],
+        'IntakeDate': row[28],
+        'StreetNumber': None,
+        'StreetName': row[2],
+        'ApartmentNumber': None,
+        'ClientCity': row[3],
+        'ClientCounty': row[4],
+        'ClientState': row[5],
+        'ClientZip': row[6],
+        'PrivacyOptOut': None,
+        'RuralAreaStatus': row[12],
+        'EnglishProficiencyLevel': row[10],
+        'BillToHud': None,
+        '8a': None,
+        '8b': None,
+        '8c': None,
+        '8d': None,
+        '8e': None,
+        '8f': None,
+        '8g': None,
+        '8h': None,
+        '8i': None,
+        '9a': None,
+        '9b': None,
+        '9c': None,
+        '9d': None,
+        '9e': None,
+        '9f': None,
+        '10a': None,
+        '10b': None,
+        '10c': None,
+        '10d': None,
+        '10e': None,
+        '10f': None,
+        '10g': None,
+        '10h': None,
+        '10i': None,
+        '10j': None,
+        '10k': None,
+        '10l': None,
+        '10m': None,
+        'PhoneNumberMobile': None,
+        'PhoneNumberWork': None,
+        'PhoneNumberHome': None,
+        'ImmigrationStatus': None,
+        'EmailHome': None,
+        'EmailWork': None,
+        'MaritalStatus': row[8],
+        'Disability': row[22],
+        'HouseholdType': row[13],
+        'Education': row[18],
+        'ReferralSource': row[34],
+        'LastContact': None,
+        'ActiveReportDateHUD': None,
+        'CompletedDate': None,
+        'InactiveDate': None
     }
 
     # Save the client by the ID for easy Access
     clients[client_id] = client
-    count += 1
-
-# Append our proper header to the new worksheet
-sheet.append(template_header)
-sheet.title = 'Clients'
 
 # Add each client to the new spreadsheet
 for client in clients:
@@ -153,18 +118,119 @@ for client in clients:
     # TODO: Fix client data to match our requirements
     # If the address needs split, pass True along with the client list
     # If correcting address use this variable instead
-    # corrected_client = fix_client_data(client_list, True)
+    corrected_client = fix_client_data(client_list, True)
     # If the address does not need split this is the one to use
-    corrected_client = fix_client_data(client_list)
+    # corrected_client = fix_client_data(client_list)
 
     # Add corrected client to the worksheet
-    sheet.append(corrected_client)
+    temp_client_sheet.append(corrected_client)
+
+
+# ******************************************************************
+for row in case_sheet.iter_rows(min_row=2, values_only=True, min_col=1):
+    # TODO: IF THE HEADER COLUMNS ARE IN DIFFERENT LOCATIONS, UPDATE THE VALUES FOR THE CLIENT!!!!!
+    client_id = row[0]
+    case_id = row[5]
+    case = {
+        'case_type': row[4],
+        'client_id': client_id,
+        'assigned_counselor': row[1],
+        'assigned_coach': None,
+        'assigned_loan_officer': None,
+        'home_purchase_client_type': None,
+        'home_purchase_client_facilitation': None,
+        'client_case_status': None,
+        'client_disclosure_form_present': None,
+        'client_first_name': None,
+        'client_middle_name': None,
+        'client_last_name': None,
+        'date_of_birth': None,
+        'credit_score_before': None,
+        'credit_score_after': None,
+        'intake_date': None,
+        'subsidized_housing_assistance': None,
+        'primary_employer': None,
+        'employer_address': None,
+        'secondary_employer': None,
+        'secondary_employer_address': None,
+        'home_owner_last_three_years': None,
+        'real_estate_agent': None,
+        'last_contact_date': None,
+        'long_term_client_date': None,
+        'short_term_client_date': None,
+        'near_mortgage_ready_date': None,
+        'mortgage_ready_date': None,
+        'in_financing_date': None,
+        'active_report_date_hud': None,
+        'completed_date': None,
+        'denied_date': None,
+        'inactive_date': None,
+        'privacy_opt_out': None,
+        'rental_resolution': None,
+        'lm_package_status': None,
+        'mm_subject_property_present': None,
+        'mm_lien_info_present': None,
+        'level_one_date': None,
+        'level_two_date': None,
+        'seeking_shelter_resolution': None,
+        'years_at_current_address': None,
+        'senior_as_hoh': None,
+        'home_owner_resolutions': None,
+        'home_purchase_resolution': None
+    }
+    # Save the client by the ID for easy Access
+    cases[case_id] = case
+
+# Add each client to the new spreadsheet
+for case in cases:
+    case_list = [v for k, v in cases[case].items()]
+
+    # # TODO: Fix client data to match our requirements
+    # corrected_case = fix_case_data(case_list)
+
+    # Add corrected client to the worksheet
+    temp_case_sheet.append(case_list)
+
+
+# ******************************************************************
+for row in session_sheet.iter_rows(min_row=2, values_only=True, min_col=2):
+    session_id = 1
+    # TODO: IF THE HEADER COLUMNS ARE IN DIFFERENT LOCATIONS, UPDATE THE VALUES FOR THE CLIENT!!!!!
+    session = {
+        'session_duration': row[5],
+        'counselor_name': row[2],
+        'client_notes': None,
+        '9_series': row[6],
+        '10a': None,
+        '10b': None,
+        '10c': None,
+        '10d': None,
+        '10e': None,
+        '10f': None,
+        '10g': None,
+        '10h': None,
+        '10i': None,
+        '10j': None,
+        '10k': None,
+        '10l': None,
+        '10m': None,
+        'session_fee': None,
+        'billable_to': None,
+        'if_other_who': None,
+    }
+    # Save the client by the ID for easy Access
+    sessions[session_id] = session
+    session_id += 1
+
+for session in sessions:
+    session_list = [v for k, v in sessions[session].items()]
+
+    # TODO: Fix client data to match our requirements
+    # corrected_session = fix_data(session_list)
+
+    # Add corrected client to the worksheet
+    temp_session_sheet.append(session_list)
 
 # Save the worksheet when all is complete
 outputFileName = os.path.splitext(masterFile)[0] + "_modified.xlsx"
 workbook.save(filename=outputFileName)
-
-# Save the count var for the next agency
-count_file = open('count.txt', 'w')
-count_file.write(str(count))
-count_file.close()
