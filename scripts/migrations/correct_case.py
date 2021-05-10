@@ -15,6 +15,19 @@ def fix_case_data(case):
         elif case[0] == 'Rental Counseling' or case[0] == 'Education':
             case[0] = case_options['caseType']['e']
 
+        client_name_arr = case[9].split(' ')
+        if len(client_name_arr) == 2:
+            case[9] = client_name_arr[0]
+            case[11] = client_name_arr[1]
+        elif len(client_name_arr) == 3:
+            case[9] = client_name_arr[0]
+            case[10] = client_name_arr[1]
+            case[11] = client_name_arr[2]
+        elif len(client_name_arr) == 4:
+            case[9] = client_name_arr[0]
+            case[10] = client_name_arr[1]
+            case[11] = client_name_arr[3]
+
         # Fix client case status
         if case[7] == 'In-Process':
             case[7] = case_options['clientCaseStatus']['a']

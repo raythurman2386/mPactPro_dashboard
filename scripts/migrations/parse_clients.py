@@ -1,5 +1,7 @@
 from openpyxl import load_workbook, Workbook
 from correct_client import fix_client_data
+from correct_case import fix_case_data
+from correct_session import fix_session_data
 from utils import correct_date, create_workbook
 import sys
 import os
@@ -34,8 +36,8 @@ for row in client_sheet.iter_rows(min_row=2, values_only=True, min_col=1):
     # clients for each different cms we are importing.
     client = {
         'clientId': client_id,
-        'ClientCaseStatus': row[40],
-        'ClientProgramEnrollment': row[32],
+        'ClientCaseStatus': row[32],
+        'ClientProgramEnrollment': row[40],
         'ActiveStaff': row[26],
         'ClientFirstName': row[0],
         'ClientMiddleName': None,
@@ -51,7 +53,7 @@ for row in client_sheet.iter_rows(min_row=2, values_only=True, min_col=1):
         'CountyAmiIncomeLimit': None,
         'HouseholdIncome': row[17],
         'HouseholdIncomeBand': row[14],
-        'IntakeDate': row[28],
+        'IntakeDate': correct_date(row[28]),
         'StreetNumber': None,
         'StreetName': row[2],
         'ApartmentNumber': None,
@@ -131,74 +133,82 @@ for row in case_sheet.iter_rows(min_row=2, values_only=True, min_col=1):
     # TODO: IF THE HEADER COLUMNS ARE IN DIFFERENT LOCATIONS, UPDATE THE VALUES FOR THE CLIENT!!!!!
     client_id = row[0]
     case_id = row[5]
-    case = {
-        'case_type': row[4],
-        'client_id': client_id,
-        'assigned_counselor': row[1],
-        'assigned_coach': None,
-        'assigned_loan_officer': None,
-        'home_purchase_client_type': None,
-        'home_purchase_client_facilitation': None,
-        'client_case_status': None,
-        'client_disclosure_form_present': None,
-        'client_first_name': None,
-        'client_middle_name': None,
-        'client_last_name': None,
-        'date_of_birth': None,
-        'credit_score_before': None,
-        'credit_score_after': None,
-        'intake_date': None,
-        'subsidized_housing_assistance': None,
-        'primary_employer': None,
-        'employer_address': None,
-        'secondary_employer': None,
-        'secondary_employer_address': None,
-        'home_owner_last_three_years': None,
-        'real_estate_agent': None,
-        'last_contact_date': None,
-        'long_term_client_date': None,
-        'short_term_client_date': None,
-        'near_mortgage_ready_date': None,
-        'mortgage_ready_date': None,
-        'in_financing_date': None,
-        'active_report_date_hud': None,
-        'completed_date': None,
-        'denied_date': None,
-        'inactive_date': None,
-        'privacy_opt_out': None,
-        'rental_resolution': None,
-        'lm_package_status': None,
-        'mm_subject_property_present': None,
-        'mm_lien_info_present': None,
-        'level_one_date': None,
-        'level_two_date': None,
-        'seeking_shelter_resolution': None,
-        'years_at_current_address': None,
-        'senior_as_hoh': None,
-        'home_owner_resolutions': None,
-        'home_purchase_resolution': None
-    }
-    # Save the client by the ID for easy Access
-    cases[case_id] = case
+    try:
+        case = {
+            'case_type': row[4],
+            'client_id': client_id,
+            'assigned_counselor': row[1],
+            'assigned_coach': None,
+            'assigned_loan_officer': None,
+            'home_purchase_client_type': None,
+            'home_purchase_client_facilitation': None,
+            'client_case_status': clients[client_id]['ClientCaseStatus'],
+            'client_disclosure_form_present': None,
+            'client_first_name': clients[client_id]['ClientFirstName'],
+            'client_middle_name': None,
+            'client_last_name': None,
+            'date_of_birth': None,
+            'credit_score_before': None,
+            'credit_score_after': None,
+            'intake_date': clients[client_id]['IntakeDate'],
+            'subsidized_housing_assistance': None,
+            'primary_employer': None,
+            'employer_address': None,
+            'secondary_employer': None,
+            'secondary_employer_address': None,
+            'home_owner_last_three_years': None,
+            'real_estate_agent': None,
+            'last_contact_date': None,
+            'long_term_client_date': None,
+            'short_term_client_date': None,
+            'near_mortgage_ready_date': None,
+            'mortgage_ready_date': None,
+            'in_financing_date': None,
+            'active_report_date_hud': None,
+            'completed_date': None,
+            'denied_date': None,
+            'inactive_date': None,
+            'privacy_opt_out': None,
+            'rental_resolution': None,
+            'lm_package_status': None,
+            'mm_subject_property_present': None,
+            'mm_lien_info_present': None,
+            'level_one_date': None,
+            'level_two_date': None,
+            'seeking_shelter_resolution': None,
+            'years_at_current_address': None,
+            'senior_as_hoh': None,
+            'home_owner_resolutions': None,
+            'home_purchase_resolution': None
+        }
+        # Save the client by the ID for easy Access
+        cases[case_id] = case
+    except KeyError:
+        pass
 
 # Add each client to the new spreadsheet
 for case in cases:
     case_list = [v for k, v in cases[case].items()]
 
     # # TODO: Fix client data to match our requirements
-    # corrected_case = fix_case_data(case_list)
+    corrected_case = fix_case_data(case_list)
 
     # Add corrected client to the worksheet
     temp_case_sheet.append(case_list)
 
 
 # ******************************************************************
-for row in session_sheet.iter_rows(min_row=2, values_only=True, min_col=2):
-    session_id = 1
+session_id = 1
+for row in session_sheet.iter_rows(min_row=2, values_only=True, min_col=1):
+    client_id = row[0]
     # TODO: IF THE HEADER COLUMNS ARE IN DIFFERENT LOCATIONS, UPDATE THE VALUES FOR THE CLIENT!!!!!
     session = {
+        'SessionID': session_id,
+        'ClientID': client_id,
+        'TimeDateSession': correct_date(row[4]),
         'session_duration': row[5],
         'counselor_name': row[2],
+        'SessionType': None,
         'client_notes': None,
         '9_series': row[6],
         '10a': None,
@@ -220,13 +230,13 @@ for row in session_sheet.iter_rows(min_row=2, values_only=True, min_col=2):
     }
     # Save the client by the ID for easy Access
     sessions[session_id] = session
-    session_id += 1
+    session_id = session_id + 1
 
 for session in sessions:
     session_list = [v for k, v in sessions[session].items()]
 
     # TODO: Fix client data to match our requirements
-    # corrected_session = fix_data(session_list)
+    corrected_session = fix_session_data(session_list)
 
     # Add corrected client to the worksheet
     temp_session_sheet.append(session_list)

@@ -4,16 +4,42 @@ from utils import options
 def fix_client_data(client, address=False):
     try:
         # Correct client case status index 1
-        if client[1] == 'In-Process':
+        # if client[1] == 'In-Process':
+        #     client[1] = options['ClientCaseStatus']['b']
+        # elif client[1] == 'Fulfilled':
+        #     client[1] = options['ClientCaseStatus']['c']
+        # elif client[1] == 'Suspended' or client[1] == 'Ineligible':
+        #     client[1] = options['ClientCaseStatus']['e']
+        if client[1] == 'Dropped Out':
+            client[1] = options['ClientCaseStatus']['d']
+        elif client[1] == 'Ongoing':
             client[1] = options['ClientCaseStatus']['b']
-        elif client[1] == 'Fulfilled':
-            client[1] = options['ClientCaseStatus']['c']
-        elif client[1] == 'Suspended' or client[1] == 'Ineligible':
+        elif client[1] == 'No Further Contact' or client[1] is None:
             client[1] = options['ClientCaseStatus']['e']
+        elif client[1] == 'Other':
+            client[1] = options['ClientCaseStatus']['a']
 
-        # Correct Client Program Enrollment index 2
-        if client[2] == 'Financial Capability Counseling':
-            client[2] = options['ClientProgramEnrollment']['e']
+        # # Correct Client Program Enrollment index 2
+        if client[2] == 'Rental Topics':
+            client[2] = options['ClientProgramEnrollment']['d']
+        elif client[2] == 'Pre-purchase/Homebuying':
+            client[2] = options['ClientProgramEnrollment']['a']
+        elif client[2] == 'Foreclosure Counseling':
+            client[2] = options['ClientProgramEnrollment']['b']
+
+        # comment out if name doesn't need separated
+        client_name_arr = client[4].split(' ')
+        if len(client_name_arr) == 2:
+            client[4] = client_name_arr[0]
+            client[6] = client_name_arr[1]
+        elif len(client_name_arr) == 3:
+            client[4] = client_name_arr[0]
+            client[5] = client_name_arr[1]
+            client[6] = client_name_arr[2]
+        elif len(client_name_arr) == 4:
+            client[4] = client_name_arr[0]
+            client[5] = client_name_arr[1]
+            client[6] = client_name_arr[3]
 
         # Correct Gender if needed index 8
         if client[8] == 'M':
@@ -48,6 +74,9 @@ def fix_client_data(client, address=False):
         elif client[9] == 'Black or African American and White' or client[9] == 900:
             client[9] = options['race']['h']
 
+        elif client[9] == 'American Indian or Alaska Native and Black or African American':
+            client[9] = options['race']['i']
+
         elif client[9] == 'Other multiple race' or client[9] == 'Other' or client[9] == 'Central America' or \
                 client[9] == 'Hispanic' or client[9] == 'Puerto Rican' or client[9] == 904 or client[9] == 907:
             client[9] = options['race']['j']
@@ -60,11 +89,11 @@ def fix_client_data(client, address=False):
             client[10] == options['ethnicity']['a']
 
         # Correct Ethnicity index 10
-        if client[10] == 'a.  Hispanic' or client[10] == 'Hispanic/Latino':
+        if client[10] == 'Hispanic' or client[10] == 'Hispanic/Latino':
             client[10] = options['ethnicity']['a']
-        elif client[10] == 'b.  Not Hispanic' or client[10] == 'Non Hispanic/Non Latino' or client[10] is None:
+        elif client[10] == 'Not Hispanic' or client[10] == 'Non Hispanic/Non Latino':
             client[10] = options['ethnicity']['b']
-        elif client[10] == 'NULL':
+        elif client[10] == 'Unknown' or client[10] is None or client[10] == 'Chose not to respond':
             client[10] = options['ethnicity']['c']
 
         # Correct Income Band index 17
@@ -94,7 +123,7 @@ def fix_client_data(client, address=False):
                 # print(len(street_arr))
                 if street_arr[0] not in po_variations:
                     street_num = street_arr[0]
-                    new_address = ' '.join(street_arr[:3])
+                    new_address = ' '.join(street_arr[1:3])
                     client[19] = street_num
                     client[20] = new_address
                 else:

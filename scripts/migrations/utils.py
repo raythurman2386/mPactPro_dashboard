@@ -51,10 +51,11 @@ def create_workbook():
                                                                                       'LevelOneDate', 'LevelTwoDate',
                    'SeekingShelterResolution', 'YearsAtCurrentAddress'
                                                'SeniorAsHoH', 'HomeOwnerResolutions', 'HomePurchaseResolution']
-    session_header = ['SessionDuration', 'CounselorName', 'SessionType', 'ClientNotes', '9series', '10a', '10b', '10c',
+    session_header = ['SessionID', 'ClientID', 'TimeDateSession', 'SessionDuration', 'CounselorName', 'SessionType', 'ClientNotes', '9series', '10a', '10b', '10c',
                       '10d', '10e', '10f', '10g', '10h', '10i', '10j', '10k', '10l', '10m', 'SessionFee', 'BillableTo',
                       'IfOtherWho']
-    note_header = ['ClientID', 'ClientFirstName', 'ClientLastName', 'Duration', 'NoteDate', 'Counselor', 'NoteText']
+    note_header = ['ClientID', 'ClientFirstName', 'ClientLastName',
+                   'Duration', 'NoteDate', 'Counselor', 'NoteText']
 
     # Append our proper header to the new worksheet
     template_client_sheet.append(client_header)
@@ -62,6 +63,7 @@ def create_workbook():
     template_session_sheet.append(session_header)
     template_note_sheet.append(note_header)
     # *****************************************************************************************
+    workbook.remove(workbook.active)
     return workbook
 
 
@@ -138,14 +140,14 @@ options = {
         'g': '7. Other',
     },
     'education': {
-      'a': '1. Below High School Diploma',
-      'b': '2. High School Diploma or Equivalent',
-      'c': '3. Two-Year College',
-      'd': '4. Bachelors Degree',
-      'e': '5. Masters Degree',
-      'f': '6. Above Masters Degree',
-      'g': 'Unknown',
-      'h': 'Other'
+        'a': '1. Below High School Diploma',
+        'b': '2. High School Diploma or Equivalent',
+        'c': '3. Two-Year College',
+        'd': '4. Bachelors Degree',
+        'e': '5. Masters Degree',
+        'f': '6. Above Masters Degree',
+        'g': 'Unknown',
+        'h': 'Other'
     },
     'referralSource': {
         'a': '1. Print Advertisement',
