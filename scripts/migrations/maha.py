@@ -1,12 +1,13 @@
 from openpyxl import load_workbook
 from utils import create_workbook
+from correct_client import fix_client_data
 
 # Load all files here
 client_data = load_workbook(
-    filename="MAHA/maha_9902.xlsx", data_only=True)
-case_data = load_workbook()
-session_data = load_workbook()
-note_data = load_workbook()
+    filename="maha_9902.xlsx", data_only=True)
+# case_data = load_workbook()
+# session_data = load_workbook()
+# note_data = load_workbook()
 
 # Create Hash tables for each excel tab
 clients = {}
@@ -36,7 +37,7 @@ for row in client_data.active.iter_rows(min_row=2, values_only=True, min_col=1):
         'DateOfBirth': row[36],
         'Gender': row[13],
         'Race': row[12],
-        'Ethnicity': row[88],
+        'Ethnicity': row[13],
         'VeteranStatus': None,
         'ActiveMilitary': None,
         'FirstTimeHomebuyer': None,
@@ -110,45 +111,52 @@ for row in client_data.active.iter_rows(min_row=2, values_only=True, min_col=1):
 for client in clients:
     # Need to pull over the address correction from the main file
     client_list = [v for k, v in clients[client].items()]
+
+    # If the address needs split, pass True along with the client list
+    # If correcting address use this variable instead
+    corrected_client = fix_client_data(client_list, True)
+    # If the address does not need split this is the one to use
+    # corrected_client = fix_client_data(client_list)
+
     template_client_sheet.append(client_list)
 
 # *****************************************************************************************
 # Start creating initial hash table of cases
-for row in _.active.iter_rows(min_row=2, values_only=True, min_col=1):
-    pass
+# for row in _.active.iter_rows(min_row=2, values_only=True, min_col=1):
+#     pass
 
 # *****************************************************************************************
 # Start creating initial hash table of sessions
-for row in _.active.iter_rows(min_row=2, values_only=True, min_col=1):
-    pass
+# for row in _.active.iter_rows(min_row=2, values_only=True, min_col=1):
+#     pass
 
 # *****************************************************************************************
 # Start creating initial hash table of notes
-for row in client_notes.active.iter_rows(min_row=2, values_only=True, min_col=1):
-    # TODO: IF THE HEADER COLUMNS ARE IN DIFFERENT LOCATIONS, UPDATE THE VALUES FOR THE CLIENT!!!!!
-    note_id = row[0]
-    client_id = row[1]
-    note = {
-        'client_id': client_id,
-        'first_name': clients[client_id]["ClientFirstName"],
-        'last_name': clients[client_id]["ClientLastName"],
-        'duration': None,
-        'date_start': row[2],
-        'counselor_name': None,
-        'notes': row[3],
-    }
-    # Save the client by the ID for easy Access
-    notes[note_id] = note
+# for row in client_notes.active.iter_rows(min_row=2, values_only=True, min_col=1):
+#     # TODO: IF THE HEADER COLUMNS ARE IN DIFFERENT LOCATIONS, UPDATE THE VALUES FOR THE CLIENT!!!!!
+#     note_id = row[0]
+#     client_id = row[1]
+#     note = {
+#         'client_id': client_id,
+#         'first_name': clients[client_id]["ClientFirstName"],
+#         'last_name': clients[client_id]["ClientLastName"],
+#         'duration': None,
+#         'date_start': row[2],
+#         'counselor_name': None,
+#         'notes': row[3],
+#     }
+#     # Save the client by the ID for easy Access
+#     notes[note_id] = note
 
 
-# Add each client to the new spreadsheet
-for note in notes:
-    note_list = [v for k, v in notes[note].items()]
-    # Add corrected client to the worksheet
-    template_note_sheet.append(note_list)
+# # Add each client to the new spreadsheet
+# for note in notes:
+#     note_list = [v for k, v in notes[note].items()]
+#     # Add corrected client to the worksheet
+#     template_note_sheet.append(note_list)
 # *****************************************************************************************
 
 
 # Save the worksheet when all is complete
-outputFileName = "test_modified.xlsx"
+outputFileName = "test_maha.xlsx"
 workbook.save(filename=outputFileName)
