@@ -1,11 +1,12 @@
 from openpyxl import load_workbook
-from utils import create_workbook
+from utils import correct_date, create_workbook
 from correct_client import fix_client_data
 
 # Load all files here
 client_data = load_workbook(
+    filename="MAHA/Contact.xlsx", data_only=True)
+client_remaining_data = load_workbook(
     filename="maha_9902.xlsx", data_only=True)
-# case_data = load_workbook()
 # session_data = load_workbook()
 # note_data = load_workbook()
 
@@ -25,7 +26,7 @@ template_note_sheet = workbook['Note']
 
 # Start creating initial hash table of clients
 for row in client_data.active.iter_rows(min_row=2, values_only=True, min_col=1):
-    client_id = row[3]
+    client_id = row[60]
     client = {
         'clientId': client_id,
         'ClientCaseStatus': None,
@@ -34,29 +35,29 @@ for row in client_data.active.iter_rows(min_row=2, values_only=True, min_col=1):
         'ClientFirstName': row[5],
         'ClientMiddleName': None,
         'ClientLastName': row[6],
-        'DateOfBirth': row[36],
-        'Gender': row[13],
-        'Race': row[12],
-        'Ethnicity': row[13],
+        'DateOfBirth': correct_date(row[36]),
+        'Gender': row[84],
+        'Race': row[108],
+        'Ethnicity': row[88],
         'VeteranStatus': None,
         'ActiveMilitary': None,
         'FirstTimeHomebuyer': None,
-        'HouseholdSize': row[24],
+        'HouseholdSize': row[86],
         'CountyAmiIncomeLimit': None,
-        'HouseholdIncome': row[15],
-        'HouseholdIncomeBand': row[36],
-        'IntakeDate': row[25],
+        'HouseholdIncome': row[116],
+        'HouseholdIncomeBand': None,
+        'IntakeDate': correct_date(row[42]),
         'StreetNumber': None,
         'StreetName': row[16],
         'ApartmentNumber': None,
-        'ClientCity': row[7],
+        'ClientCity': row[17],
         'ClientCounty': None,
-        'ClientState': row[8],
-        'ClientZip': row[9],
+        'ClientState': row[18],
+        'ClientZip': row[19],
         'PrivacyOptOut': None,
-        'RuralAreaStatus': row[19],
-        'EnglishProficiencyLevel': row[20],
-        'BillToHud': row[22],
+        'RuralAreaStatus': row[109],
+        'EnglishProficiencyLevel': row[75],
+        'BillToHud': None,
         '8a': None,
         '8b': None,
         '8c': None,
@@ -85,17 +86,17 @@ for row in client_data.active.iter_rows(min_row=2, values_only=True, min_col=1):
         '10k': None,
         '10l': None,
         '10m': None,
-        'PhoneNumberMobile': row[5],
+        'PhoneNumberMobile': row[26],
         'PhoneNumberWork': None,
-        'PhoneNumberHome': row[6],
+        'PhoneNumberHome': row[27],
         'ImmigrationStatus': None,
         'EmailHome': row[31],
         'EmailWork': row[31],
-        'MaritalStatus': row[11],
-        'Disability': row[23],
-        'HouseholdType': row[14],
-        'Education': row[17],
-        'ReferralSource': row[33],
+        'MaritalStatus': row[92],
+        'Disability': row[71],
+        'HouseholdType': row[85],
+        'Education': row[74],
+        'ReferralSource': row[61],
         'LastContact': None,
         'ActiveReportDateHUD': None,
         'CompletedDate': None,

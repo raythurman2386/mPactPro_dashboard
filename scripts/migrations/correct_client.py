@@ -8,7 +8,7 @@ def fix_client_data(client, address=False):
             client[1] = options['ClientCaseStatus']['d']
         elif client[1] == 'Ongoing':
             client[1] = options['ClientCaseStatus']['b']
-        elif client[1] == 'No Further Contact' or client[1] is None:
+        elif client[1] == 'No Further Contact':
             client[1] = options['ClientCaseStatus']['e']
         elif client[1] == 'Other':
             client[1] = options['ClientCaseStatus']['a']
@@ -22,25 +22,25 @@ def fix_client_data(client, address=False):
             client[2] = options['ClientProgramEnrollment']['b']
 
         # comment out if name doesn't need separated
-        client_name_arr = client[4].split(' ')
-        if len(client_name_arr) == 2:
-            client[4] = client_name_arr[0]
-            client[6] = client_name_arr[1]
-        elif len(client_name_arr) == 3:
-            client[4] = client_name_arr[0]
-            client[5] = client_name_arr[1]
-            client[6] = client_name_arr[2]
-        elif len(client_name_arr) == 4:
-            client[4] = client_name_arr[0]
-            client[5] = client_name_arr[1]
-            client[6] = client_name_arr[3]
+        # client_name_arr = client[4].split(' ')
+        # if len(client_name_arr) == 2:
+        #     client[4] = client_name_arr[0]
+        #     client[6] = client_name_arr[1]
+        # elif len(client_name_arr) == 3:
+        #     client[4] = client_name_arr[0]
+        #     client[5] = client_name_arr[1]
+        #     client[6] = client_name_arr[2]
+        # elif len(client_name_arr) == 4:
+        #     client[4] = client_name_arr[0]
+        #     client[5] = client_name_arr[1]
+        #     client[6] = client_name_arr[3]
 
         # Correct Gender if needed index 8
         if client[8] == 'M':
             client[8] = options['gender'][0]
         elif client[8] == 'Female' or client[8] == 'F':
             client[8] = options['gender'][1]
-        elif client[8] == 'NULL':
+        elif client[8] == 'O':
             client[8] = None
 
         # Correct Race index 9
@@ -142,6 +142,20 @@ def fix_client_data(client, address=False):
             client[28] = options['englishProficiency']['c']
 
         # Remove dashes from phone number
+        if client[58] is not None:
+            if '-' in client[58] and '(' not in client[58] and ')' not in client[58]:
+                new_num = client[58].replace('-', '')
+                client[58] = int(new_num)
+            elif '(' in client[58] and ')' in client[58] and '-' in client[58]:
+                phone_num = client[58].replace('(', '')
+                phone_num2 = phone_num.replace(')', '')
+                new_num = phone_num2.replace('-', '')
+                client[58] = int(new_num)
+            elif '(' in client[58] and ')' in client[58]:
+                phone_num = client[58].replace('(', '')
+                phone_num2 = phone_num.replace(')', '')
+                client[58] = int(phone_num2)
+
         if client[60] is not None:
             if '-' in client[60] and '(' not in client[60] and ')' not in client[60]:
                 new_num = client[60].replace('-', '')
