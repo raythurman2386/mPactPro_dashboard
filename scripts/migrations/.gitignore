@@ -1,3 +1,7 @@
 .venv
 /*.xlsx
+/*.csv
 /**/*.xlsx
+/**/*.csv
+__pycache__
+/MAHA/
