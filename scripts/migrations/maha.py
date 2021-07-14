@@ -5,8 +5,8 @@ from correct_client import fix_client_data
 # Load all files here
 client_data = load_workbook(
     filename="MAHA/Contact.xlsx", data_only=True)
-client_remaining_data = load_workbook(
-    filename="maha_9902.xlsx", data_only=True)
+# client_remaining_data = load_workbook(
+#     filename="maha_9902.xlsx", data_only=True)
 # session_data = load_workbook()
 # note_data = load_workbook()
 
