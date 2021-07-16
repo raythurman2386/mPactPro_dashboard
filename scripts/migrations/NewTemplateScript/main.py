@@ -1,5 +1,5 @@
 from openpyxl import load_workbook
-from utils import correct_date, create_workbook
+from utils import correct_date, create_workbook, get_phone, update_client_fields
 from correct_data import correct_data
 
 # Load all files here
@@ -19,15 +19,18 @@ workbook = create_workbook()
 template_client_sheet = workbook['Client Case Session Upload']
 template_class_sheet = workbook['Client Class Upload']
 # *****************************************************************************************
+session_id = 10000
+
 
 # Start creating initial hash table of clients
 for row in client_data.active.iter_rows(min_row=2, values_only=True, min_col=1):
     client_id = row[60]
+    phone_id = get_phone(row, 26, 27)
     client = {
         'clientId': client_id,
         'FirstName': row[5],
         'LastName': row[6],
-        'Phone': None,
+        'Phone': get_phone(row, 26, 27),
         'AddressNumber': None,
         'StreetName': row[16],
         'ClientCity': row[17],
@@ -48,7 +51,7 @@ for row in client_data.active.iter_rows(min_row=2, values_only=True, min_col=1):
         'CaseType': None,
         'CaseStartDate': correct_date(row[42]),
         'CaseID': None,
-        'SessionID': None,
+        'SessionID': session_id,
         'Date': None,
         'NOFAGrant': None,
         '9a': None,
@@ -74,23 +77,16 @@ for row in client_data.active.iter_rows(min_row=2, values_only=True, min_col=1):
         'SessionNotes': None
     }
 
+    session_id += 1
+
     # Save the client by the ID for easy Access
-    clients[client_id] = client
+    try:
+        if phone_id is not None:
+            clients[phone_id] = client
 
-# THIS IS DONE LAST FOR THE CLIENT SHEET
-# GRAB ALL DATA BEFORE THIS UNLESS TESTING
-# Add each client to the new spreadsheet
-for client in clients:
-    # Need to pull over the address correction from the main file
-    client_list = [v for k, v in clients[client].items()]
-
-    # If the address needs split, pass True along with the client list
-    # If correcting address use this variable instead
-    corrected_client = correct_data(client_list, True, 'Client_Case')
-    # If the address does not need split this is the one to use
-    # corrected_client = fix_client_data(client_list, 'Client_Case')
-
-    template_client_sheet.append(client_list)
+        clients[client_id] = client
+    except KeyError:
+        pass
 
 # *****************************************************************************************
 # Start creating initial hash table of classes
@@ -141,13 +137,44 @@ for client in clients:
 
 # Fill in remaining Case Session or Class Data from 9902 File
 for row in client_9902_data.active.iter_rows(min_row=2, min_col=1, values_only=True):
-    client_id = row[2]
+    client_id = row[3]
+    new_phone_main = get_phone(row, 5, 6)
+    date = correct_date(row[25])
+    nine_series = row[50]
     try:
-        clients[client_id]['CaseID'] = row[3]
-        clients[client_id]['Date'] = correct_date(row[25])
-        clients[client_id]['NOFAGrant'] = row[37]
+        if clients[new_phone_main]:
+            updated_fields = update_client_fields(row, nine_series, date)
+            clients[new_phone_main].update(updated_fields)
+        elif clients[client_id]:
+            updated_fields = update_client_fields(row, nine_series, date)
+            clients[client_id].update(updated_fields)
+    except TypeError:
+        # print(client_id, 'Type Error')
+        pass
     except KeyError:
-        print('Key Error')
+        # print(client_id, 'Key Error')
+        pass
+    except IndexError:
+        pass
+    finally:
+        pass
+
+
+# THIS IS DONE LAST FOR THE CLIENT SHEET
+# GRAB ALL DATA BEFORE THIS UNLESS TESTING
+# Add each client to the new spreadsheet
+for client in clients:
+    if clients[client]['CaseID'] is not None:
+        # Need to pull over the address correction from the main file
+        client_list = [v for k, v in clients[client].items()]
+
+        # If the address needs split, pass True along with the client list
+        # If correcting address use this variable instead
+        corrected_client = correct_data(client_list, True, 'Client_Case')
+        # If the address does not need split this is the one to use
+        # corrected_client = fix_client_data(client_list, 'Client_Case')
+
+        template_client_sheet.append(client_list)
 
 
 # Save the worksheet when all is complete

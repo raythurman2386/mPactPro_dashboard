@@ -3,21 +3,6 @@ from utils import options
 
 def correct_data(client, address=False, tab='Client_Case'):
     try:
-        # Remove dashes from phone number
-        if client[3] is not None:
-            if '-' in client[3] and '(' not in client[3] and ')' not in client[3]:
-                new_num = client[3].replace('-', '')
-                client[3] = int(new_num)
-            elif '(' in client[3] and ')' in client[3] and '-' in client[3]:
-                phone_num = client[3].replace('(', '')
-                phone_num2 = phone_num.replace(')', '')
-                new_num = phone_num2.replace('-', '')
-                client[3] = int(new_num)
-            elif '(' in client[3] and ')' in client[3]:
-                phone_num = client[3].replace('(', '')
-                phone_num2 = phone_num.replace(')', '')
-                client[3] = int(phone_num2)
-
         # Split address if address=True
         if address:
             po_variations = ['PO', 'P.O.', 'P', 'HOMELESS', 'Alden', 'COMFORT', 'POBOX', 'NO', 'Homeless', 'Chicago',
@@ -101,8 +86,9 @@ def correct_data(client, address=False, tab='Client_Case'):
             client[17] = options['caseType']['e']
 
         if tab == 'Client_Case':
-            # Correct NOFA Grant index 22
-            pass
+            # Correct NOFA Grant index 26
+            if client[26] == 'Activities for All Counseling and Education':
+                client[26] = None
 
         if tab == 'Client_Class':
             # Correct Attended Status index 23

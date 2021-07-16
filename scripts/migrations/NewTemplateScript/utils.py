@@ -10,6 +10,64 @@ def correct_date(date):
         return date
 
 
+def clean_phone(phone):
+    phone_str = str(phone)
+    try:
+        if phone is not None:
+            if '-' in phone_str and '(' not in phone_str and ')' not in phone_str:
+                new_num = phone_str.replace('-', '')
+                phone = int(new_num)
+            elif '(' in phone_str and ')' in phone_str and '-' in phone_str:
+                phone_num = phone_str.replace('(', '')
+                phone_num2 = phone_num.replace(')', '')
+                new_num = phone_num2.replace('-', '')
+                phone = int(new_num)
+            elif '(' in phone_str and ')' in phone_str:
+                phone_num = phone_str.replace('(', '')
+                phone_num2 = phone_num.replace(')', '')
+                phone = int(phone_num2)
+    except ValueError:
+        pass
+
+    return phone
+
+
+def get_phone(client, a, b):
+    if client[a] is None:
+        return clean_phone(client[b])
+
+    return clean_phone(client[a])
+
+
+def check_grant(row, date):
+    if row is not None:
+        return date
+
+    return
+
+
+def update_client_fields(client, nine, date):
+    new_fields = {
+        'CaseID': client[4],
+        'Date': date,
+        'NOFAGrant': client[38],
+        'Zip': client[9],
+        nine: date,
+        '10a': check_grant(client[40], date),
+        '10b': check_grant(client[41], date),
+        '10c': check_grant(client[42], date),
+        '10d': check_grant(client[43], date),
+        '10e': check_grant(client[44], date),
+        '10f': check_grant(client[45], date),
+        '10i': check_grant(client[46], date),
+        '10j': check_grant(client[47], date),
+        '10l': check_grant(client[48], date),
+        '10m': check_grant(client[49], date),
+    }
+
+    return new_fields
+
+
 def create_workbook():
     # *****************************************************************************************
     # Open new workbook, create tabs, and write headers
