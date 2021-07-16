@@ -94,58 +94,58 @@ for client in clients:
 
 # *****************************************************************************************
 # Start creating initial hash table of classes
-for row in client_data.active.iter_rows(min_row=2, values_only=True, min_col=1):
-    client_id = row[60]
-    client = {
-        'clientId': client_id,
-        'FirstName': row[5],
-        'LastName': row[6],
-        'Phone': None,
-        'AddressNumber': None,
-        'StreetName': row[16],
-        'ClientCity': row[17],
-        'ClientState': row[18],
-        'ClientCounty': None,
-        'Zip': row[19],
-        'Race': row[108],
-        'Ethnicity': row[88],
-        'EnglishProficiencyLevel': row[75],
-        'HouseholdIncome': row[116],
-        'HouseholdSize': row[86],
-        'ApartmentNumber': None,
-        'Email': row[31],
-        'InitialCaseType': None,
-        'DateOfBirth': correct_date(row[36]),
-        'CounselorName': None,
-        'IntakeDate': correct_date(row[42]),
-        'CourseID': None,
-        'ClassDate': None,
-        'AttendanceStatus': None
-    }
+# for row in client_data.active.iter_rows(min_row=2, values_only=True, min_col=1):
+#     client_id = row[60]
+#     client = {
+#         'clientId': client_id,
+#         'FirstName': row[5],
+#         'LastName': row[6],
+#         'Phone': None,
+#         'AddressNumber': None,
+#         'StreetName': row[16],
+#         'ClientCity': row[17],
+#         'ClientState': row[18],
+#         'ClientCounty': None,
+#         'Zip': row[19],
+#         'Race': row[108],
+#         'Ethnicity': row[88],
+#         'EnglishProficiencyLevel': row[75],
+#         'HouseholdIncome': row[116],
+#         'HouseholdSize': row[86],
+#         'ApartmentNumber': None,
+#         'Email': row[31],
+#         'InitialCaseType': None,
+#         'DateOfBirth': correct_date(row[36]),
+#         'CounselorName': None,
+#         'IntakeDate': correct_date(row[42]),
+#         'CourseID': None,
+#         'ClassDate': None,
+#         'AttendanceStatus': None
+#     }
 
-    # Save the client by the ID for easy Access
-    classes[client_id] = client
+#     # Save the client by the ID for easy Access
+#     classes[client_id] = client
 
-for client in classes:
-    # Need to pull over the address correction from the main file
-    client_list = [v for k, v in classes[client].items()]
+# for client in classes:
+#     # Need to pull over the address correction from the main file
+#     client_list = [v for k, v in classes[client].items()]
 
-    # If the address needs split, pass True along with the client list
-    # If correcting address use this variable instead
-    corrected_client = correct_data(client_list, True, 'Client_Class')
-    # If the address does not need split this is the one to use
-    # corrected_client = fix_client_data(client_list, 'Client_Class')
+#     # If the address needs split, pass True along with the client list
+#     # If correcting address use this variable instead
+#     corrected_client = correct_data(client_list, True, 'Client_Class')
+#     # If the address does not need split this is the one to use
+#     # corrected_client = fix_client_data(client_list, 'Client_Class')
 
-    template_class_sheet.append(client_list)
+#     template_class_sheet.append(client_list)
 
 
 # Fill in remaining Case Session or Class Data from 9902 File
-for row in client_9902_data.active.iter_rows(min_row=11, min_col=4, values_only=True):
-    client_id = row[1]
+for row in client_9902_data.active.iter_rows(min_row=2, min_col=1, values_only=True):
+    client_id = row[2]
     try:
-        clients[client_id]['CaseID'] = row[2]
-        clients[client_id]['Date'] = correct_date(row[24])
-        clients[client_id]['NOFAGrant'] = row[36]
+        clients[client_id]['CaseID'] = row[3]
+        clients[client_id]['Date'] = correct_date(row[25])
+        clients[client_id]['NOFAGrant'] = row[37]
     except KeyError:
         print('Key Error')
 
